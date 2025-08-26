@@ -2,19 +2,19 @@ package com.project.extension.dto.usuario;
 
 import jakarta.validation.constraints.NotNull;
 
-public record UsuarioRequestDto (
+public record UsuarioRequestDto(
 
         @NotNull
-         String nome,
+        String nome,
 
-         @NotNull
-          String email,
+        @NotNull
+        String email,
 
-         @NotNull
-         String cpg,
+        @NotNull
+        String cpf,
 
-         @NotNull
-          String senha,
+        @NotNull
+        String senha,
 
         @NotNull
         String role
