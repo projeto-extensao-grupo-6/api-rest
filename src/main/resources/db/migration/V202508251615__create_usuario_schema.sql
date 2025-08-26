@@ -5,5 +5,7 @@ CREATE TABLE usuario (
     email VARCHAR(155) NOT NULL,
     senha VARCHAR(255) NOT NULL,
     first_login BOOLEAN DEFAULT TRUE,
-    dt_ult_alt DATETIME DEFAULT CURRENT_TIMESTAMP
+    role_id INT NOT NULL,
+    dt_ult_alt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_usuario_role FOREIGN KEY (role_id) REFERENCES role(id)
 );
