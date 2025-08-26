@@ -4,13 +4,14 @@ import com.project.extension.entity.Role;
 import com.project.extension.entity.Usuario;
 import com.project.extension.exception.naoencontrado.UsuarioNaoEncontradoException;
 import com.project.extension.repository.UsuarioRepository;
-import com.project.extension.util.LoggerUtils;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class UsuarioService {
@@ -22,21 +23,21 @@ public class UsuarioService {
         Role roleExistente = roleService.buscarPorNome(nomeRole);
         usuario.setRole(roleExistente);
         Usuario salvo = repository.save(usuario);
-        LoggerUtils.info("Usuário salvo com ID: " + salvo.getId());
+        log.info("Usuário salvo com ID: " + salvo.getId());
 
         return salvo;
     }
 
     public Usuario buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> {
-            LoggerUtils.error("Usuário com ID " + id + " não encontrado");
+            log.error("Usuário com ID " + id + " não encontrado");
             return new UsuarioNaoEncontradoException();
         });
     }
 
     public List<Usuario> buscarTodos() {
         List<Usuario> lista = repository.findAll();
-        LoggerUtils.info("Total de usuários encontrados: " + lista.size());
+        log.info("Total de usuários encontrados: " + lista.size());
         return lista;
     }
 
@@ -50,7 +51,7 @@ public class UsuarioService {
 
     public void deletar(Integer id) {
         repository.deleteById(id);
-        LoggerUtils.info( "Usuário deletado com sucesso");
+        log.info( "Usuário deletado com sucesso");
     }
 
     public String buscarPorEmail(@NotBlank String email) {
@@ -71,7 +72,7 @@ public class UsuarioService {
         }
 
         Usuario atualizado = repository.save(usuarioExistente);
-        LoggerUtils.info("Usuário atualizado com sucesso");
+        log.info("Usuário atualizado com sucesso");
         return atualizado;
     }
 
