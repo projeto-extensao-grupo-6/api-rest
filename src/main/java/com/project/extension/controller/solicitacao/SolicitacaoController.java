@@ -7,6 +7,7 @@ import com.project.extension.entity.Solicitacao;
 import com.project.extension.service.SolicitacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,8 +42,8 @@ public class SolicitacaoController implements SolicitacaoControllerDoc{
     }
 
     @Override
-    public ResponseEntity<Void> aceitarSolicitacao(Integer id, String cargoAlterado) {
-        service.aceitarSolicitacao(id, cargoAlterado);
+    public ResponseEntity<Void> aceitarSolicitacao( @PathVariable Integer id) {
+        service.aceitarSolicitacao(id);
         return ResponseEntity.ok().build();
     }
 

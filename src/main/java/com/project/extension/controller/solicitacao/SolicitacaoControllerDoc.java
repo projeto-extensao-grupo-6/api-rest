@@ -48,7 +48,7 @@ public interface SolicitacaoControllerDoc {
     })
     ResponseEntity<List<SolicitacaoResponseDto>> listarPendentes();
 
-    @PutMapping("/{id}/aceitar")
+    @PutMapping("/aceitar/{id}")
     @Operation(summary = "Aceitar solicitação", description = """
             Aceitar Solicitação de cadastro de novo usuário
             ---
@@ -63,8 +63,7 @@ public interface SolicitacaoControllerDoc {
             @ApiResponse(responseCode = "400", description = "Quando o corpo de requisição está incorreto",
                     content = @Content())
     })
-    ResponseEntity<Void> aceitarSolicitacao(@PathVariable Integer id,
-                                            @RequestParam(required = false) String cargoAlterado);
+    ResponseEntity<Void> aceitarSolicitacao(@PathVariable Integer id);
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Recusar solicitação", description = """
