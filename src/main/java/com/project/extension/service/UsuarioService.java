@@ -74,4 +74,14 @@ public class UsuarioService {
         LoggerUtils.info("Usuário atualizado com sucesso");
         return atualizado;
     }
+
+//    public void alterarSenhaPrimeiroLogin(Integer id, String novaSenha) {
+//        Usuario usuario = repository.findById(id)
+//                .orElseThrow(UsuarioNaoEncontradoException::new);
+//
+//        usuario.setSenha(passwordEncoder.encode(novaSenha));
+//        usuario.setFirstLogin(false);
+//
+//        repository.save(usuario);
+//    }
 }
