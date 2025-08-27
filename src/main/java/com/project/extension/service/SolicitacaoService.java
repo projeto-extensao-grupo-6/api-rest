@@ -10,6 +10,8 @@ import com.project.extension.repository.SolicitacaoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -33,9 +35,10 @@ public class SolicitacaoService {
         return repository.findByStatus(Status.PENDENTE);
     }
 
-    public void aceitarSolicitacao(Integer id) {
+    public void aceitarSolicitacao(Integer id, String cargo) {
         repository.findById(id).ifPresentOrElse(solicitacao -> {
             solicitacao.setStatus(Status.APROVADO);
+            solicitacao.setCargoDesejado(cargo);
             repository.save(solicitacao);
 
             try {
