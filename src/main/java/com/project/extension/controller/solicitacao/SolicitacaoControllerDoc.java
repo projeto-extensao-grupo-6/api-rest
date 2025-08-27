@@ -33,7 +33,7 @@ public interface SolicitacaoControllerDoc {
     })
     ResponseEntity<SolicitacaoResponseDto> cadastrarSolicitacao(@RequestBody SolicitacaoRequestDto dto);
 
-    @GetMapping
+    @GetMapping("/listar-pendentes")
     @Operation(summary = "Listar solicitações pendentes", description = """
             Lista todas as solicitações com status pendente
             ---
@@ -66,7 +66,7 @@ public interface SolicitacaoControllerDoc {
     })
     ResponseEntity<Void> aceitarSolicitacao(@PathVariable Integer id, @RequestBody CargoDesejadoRequestDto cargoDesejado);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/recusar/{id}")
     @Operation(summary = "Recusar solicitação", description = """
             Recusar solicitação de novo usuário
             ---
