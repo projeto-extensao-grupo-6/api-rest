@@ -1,5 +1,6 @@
 package com.project.extension.controller.solicitacao;
 
+import com.project.extension.dto.solicitacao.CargoDesejadoRequestDto;
 import com.project.extension.dto.solicitacao.SolicitacaoRequestDto;
 import com.project.extension.dto.solicitacao.SolicitacaoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -63,7 +64,7 @@ public interface SolicitacaoControllerDoc {
             @ApiResponse(responseCode = "400", description = "Quando o corpo de requisição está incorreto",
                     content = @Content())
     })
-    ResponseEntity<Void> aceitarSolicitacao(@PathVariable Integer id);
+    ResponseEntity<Void> aceitarSolicitacao(@PathVariable Integer id, @RequestBody CargoDesejadoRequestDto cargoDesejado);
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Recusar solicitação", description = """
