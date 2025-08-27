@@ -5,6 +5,7 @@ import com.project.extension.dto.auth.AuthResponseDto;
 import com.project.extension.dto.usuario.UsuarioMapper;
 import com.project.extension.entity.Usuario;
 import com.project.extension.service.UsuarioService;
+import com.project.extension.util.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +24,7 @@ import java.util.List;
 public class AuthControllerImpl implements AuthControllerDoc{
 
     private final AuthenticationManager authManager;
-    private final JwtUtil jwtUtil;
+    private final TokenProvider tokenProvider;
     private final UsuarioService usuarioService;
     private final PasswordEncoder encoder;
     private final UsuarioMapper mapper;
@@ -58,6 +59,6 @@ public class AuthControllerImpl implements AuthControllerDoc{
                 usuario.getNome(),
                 List.of(new SimpleGrantedAuthority("ROLE_" + usuario.getRole().getNome()))
         );
-        return jwtUtil.gerarToken(userDetails);
+        return tokenProvider.gerarToken(userDetails);
     }
 }

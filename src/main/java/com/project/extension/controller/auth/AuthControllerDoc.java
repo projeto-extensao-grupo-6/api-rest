@@ -2,7 +2,6 @@ package com.project.extension.controller.auth;
 
 import com.project.extension.dto.auth.AuthRequestDto;
 import com.project.extension.dto.auth.AuthResponseDto;
-import com.project.extension.dto.usuario.UsuarioRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
