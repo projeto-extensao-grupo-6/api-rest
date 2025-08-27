@@ -43,7 +43,8 @@ public class SecurityConfig {
     private static final String[] ENDPOINTS_RESTRITOS_ADMIN = {
             "/solicitacoes/aceitar/**",
             "/solicitacoes/recusar/**",
-            "/solicitacoes/listar-pendentes"
+            "/solicitacoes/listar-pendentes",
+            "/usuarios/**"
     };
 
     @Bean
