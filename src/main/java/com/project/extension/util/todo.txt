@@ -26,18 +26,4 @@ TODO:
 
 mudar credencias de email (mail config)
 
-alterar cadastro de solicitação para n cadastrar mais cargo, quem cadastra é o metodo aceitar solicitação
-
-jwt
-
-bloquear rotas
-
----
-
-o que foi feito?
-
-crud de usuario
-
-crud de solicitação
-
-envio de email
+adicionar metodo para mudar senha no primeiro login
