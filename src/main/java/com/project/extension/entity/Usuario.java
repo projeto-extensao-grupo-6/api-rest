@@ -17,6 +17,7 @@ public class Usuario {
     private String email;
     private String cpf;
     private String senha;
+    private String telefone;
     private Boolean firstLogin;
 
     @ManyToOne

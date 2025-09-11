@@ -76,6 +76,7 @@ public class SolicitacaoService {
                 solicitacao.getEmail(),
                 solicitacao.getCpf(),
                 senhaCriptografada,
+                solicitacao.getTelefone(),
                 role.getNome()
         ));
 
