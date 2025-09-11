@@ -7,6 +7,7 @@ public record SolicitacaoResponseDto(
         Integer id,
         String nome,
         String cpf,
-        String email
+        String email,
+        String telefone
 ) {
 }

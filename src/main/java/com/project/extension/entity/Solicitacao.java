@@ -17,7 +17,7 @@ public class Solicitacao {
     private String nome;
     private String email;
     private String cpf;
-
+    private String telefone;
     @Column(name = "cargo_desejado")
     private String cargoDesejado;
 

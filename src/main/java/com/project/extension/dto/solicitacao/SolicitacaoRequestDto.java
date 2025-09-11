@@ -11,5 +11,8 @@ public record SolicitacaoRequestDto(
         String email,
 
         @NotNull
-        String cpf
+        String cpf,
+
+        @NotNull
+        String telefone
 ) {}

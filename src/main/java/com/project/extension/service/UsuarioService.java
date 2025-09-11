@@ -50,6 +50,7 @@ public class UsuarioService {
         destino.setNome(origem.getNome());
         destino.setCpf(origem.getCpf());
         destino.setEmail(origem.getEmail());
+        destino.setTelefone(origem.getTelefone());
         destino.setSenha(origem.getSenha());
         destino.setRole(origem.getRole());
     }
@@ -87,14 +88,4 @@ public class UsuarioService {
     public String encodePassword(String senha) {
         return passwordEncoder.encode(senha);
     }
-
-//    public void alterarSenhaPrimeiroLogin(Integer id, String novaSenha) {
-//        Usuario usuario = repository.findById(id)
-//                .orElseThrow(UsuarioNaoEncontradoException::new);
-//
-//        usuario.setSenha(passwordEncoder.encode(novaSenha));
-//        usuario.setFirstLogin(false);
-//
-//        repository.save(usuario);
-//    }
 }
