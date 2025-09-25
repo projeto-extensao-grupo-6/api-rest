@@ -1,4 +1,4 @@
-package com.project.extension.entity;
+package com.project.extension.entity.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

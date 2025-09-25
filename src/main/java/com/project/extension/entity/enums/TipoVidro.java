@@ -1,4 +1,4 @@
-package com.project.extension.entity;
+package com.project.extension.entity.enums;
 
 public enum TipoVidro {
 
