@@ -4,22 +4,11 @@ import jakarta.validation.constraints.NotNull;
 
 public record UsuarioRequestDto(
 
-        @NotNull
-        String nome,
-
-        @NotNull
-        String email,
-
-        @NotNull
-        String cpf,
-
-        @NotNull
-        String senha,
-
-        @NotNull
-        String telefone,
-
-        @NotNull
-        String role
+        @NotNull String nome,
+        @NotNull String email,
+        @NotNull String cpf,
+        @NotNull String senha,
+        @NotNull String telefone,
+        @NotNull String role
 
 ) {}
