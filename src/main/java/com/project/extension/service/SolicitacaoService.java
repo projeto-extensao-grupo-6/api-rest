@@ -1,9 +1,8 @@
 package com.project.extension.service;
 
 import com.project.extension.dto.usuario.UsuarioMapper;
-import com.project.extension.dto.usuario.UsuarioRequestDto;
 import com.project.extension.entity.Solicitacao;
-import com.project.extension.entity.enums.Status;
+import com.project.extension.entity.Status;
 import com.project.extension.entity.Usuario;
 import com.project.extension.repository.SolicitacaoRepository;
 import lombok.AllArgsConstructor;
