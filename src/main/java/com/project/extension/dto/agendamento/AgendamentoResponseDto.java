@@ -1,5 +1,6 @@
 package com.project.extension.dto.agendamento;
 
+import com.project.extension.dto.endereco.EnderecoResponseDto;
 import com.project.extension.entity.StatusAgendamento;
 import com.project.extension.entity.TipoAgendamento;
 
@@ -10,6 +11,7 @@ public record AgendamentoResponseDto(
         TipoAgendamento tipoAgendamento,
         LocalDateTime dataAgendamento,
         StatusAgendamento statusAgendamento,
-        String observacao
+        String observacao,
+        EnderecoResponseDto endereco
 ) {
 }
