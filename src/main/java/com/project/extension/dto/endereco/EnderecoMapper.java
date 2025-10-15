@@ -1,13 +1,37 @@
 package com.project.extension.dto.endereco;
 
 import com.project.extension.entity.Endereco;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface EnderecoMapper {
+@Component
+public class EnderecoMapper {
 
-    Endereco toEntity(EnderecoRequestDto dto);
+    public Endereco toEntity(EnderecoRequestDto dto) {
+        if (dto == null) return null;
 
-    EnderecoResponseDto toResponse(Endereco endereco);
+        return new Endereco(
+                dto.rua(),
+                dto.complemento(),
+                dto.cep(),
+                dto.cidade(),
+                dto.bairro(),
+                dto.uf(),
+                dto.pais()
+        );
+    }
+
+    public EnderecoResponseDto toResponse(Endereco endereco) {
+        if (endereco == null) return null;
+
+        return new EnderecoResponseDto(
+                endereco.getId(),
+                endereco.getRua(),
+                endereco.getComplemento(),
+                endereco.getCep(),
+                endereco.getCidade(),
+                endereco.getBairro(),
+                endereco.getUf(),
+                endereco.getPais()
+        );
+    }
 }
