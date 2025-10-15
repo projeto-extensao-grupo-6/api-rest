@@ -9,10 +9,6 @@ public class AgendamentoNaoEncontradoException extends NaoEncontradoException {
     public AgendamentoNaoEncontradoException() {
         super(MENSAGEM);
     }
-
-    public AgendamentoNaoEncontradoException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }
 
 
