@@ -1,6 +1,7 @@
 package com.project.extension.service;
 
 import com.project.extension.entity.Funcionario;
+import com.project.extension.exception.naoencontrado.AgendamentoNaoEncontradoException;
 import com.project.extension.exception.naoencontrado.FuncionarioNaoEncontradoException;
 import com.project.extension.repository.FuncionarioRepository;
 import lombok.AllArgsConstructor;
@@ -23,8 +24,10 @@ public class FuncionarioService {
     }
 
     public Funcionario buscarPorId(Integer id) {
-        return repository.findById(id)
-                .orElseThrow(FuncionarioNaoEncontradoException::new);
+        return repository.findById(id).orElseThrow(() -> {
+            log.error("Funcionário com ID " + id + " não encontrado");
+            return new FuncionarioNaoEncontradoException();
+        });
     }
 
     public List<Funcionario> listar() {
