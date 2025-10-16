@@ -3,6 +3,7 @@ package com.project.extension.service;
 import com.project.extension.entity.Agendamento;
 import com.project.extension.entity.Endereco;
 import com.project.extension.entity.Funcionario;
+import com.project.extension.entity.Status;
 import com.project.extension.exception.naoencontrado.AgendamentoNaoEncontradoException;
 import com.project.extension.repository.AgendamentoRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class AgendamentoService {
     private final AgendamentoRepository repository;
     private final EnderecoService enderecoService;
     private final FuncionarioService funcionarioService;
+    private final StatusService statusService;
 
     public Agendamento salvar(Agendamento agendamento) {
         Endereco enderecoExistente = enderecoService.buscarPorCep(agendamento.getEndereco().getCep());
@@ -28,6 +30,14 @@ public class AgendamentoService {
                 : enderecoService.cadastrar(agendamento.getEndereco());
 
         agendamento.setEndereco(enderecoSalvo);
+
+        Status statusExiste = statusService.buscarPorTipoAndStatus(agendamento.getStatusAgendamento().getTipo(),
+                agendamento.getStatusAgendamento().getNome());
+        Status statusSalvo = statusExiste != null
+                ? statusExiste
+                : statusService.cadastrar(agendamento.getStatusAgendamento());
+
+        agendamento.setStatusAgendamento(statusSalvo);
 
         List<Funcionario> funcionariosSalvos = new ArrayList<>();
 
@@ -78,6 +88,12 @@ public class AgendamentoService {
         if (origem.getEndereco() != null) {
             Endereco enderecoAtualizado = enderecoService.editar(origem.getEndereco(), origem.getEndereco().getId());
             destino.setEndereco(enderecoAtualizado);
+        }
+
+        if (origem.getStatusAgendamento() != null) {
+            Status statusAtualizado = statusService.buscarPorTipoAndStatus(origem.getStatusAgendamento().getTipo(),
+                    origem.getStatusAgendamento().getNome());
+            destino.setStatusAgendamento(statusAtualizado);
         }
 
         if (origem.getFuncionarios() != null) {
