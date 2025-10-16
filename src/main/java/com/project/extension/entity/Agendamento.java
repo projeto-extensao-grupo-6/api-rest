@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,6 +25,15 @@ public class Agendamento {
 
     @ManyToOne
     private Endereco endereco;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "agendamento_funcionario",
+            joinColumns = @JoinColumn(name = "id_agendamento"),
+            inverseJoinColumns = @JoinColumn(name = "id_funcionario")
+    )
+    private List<Funcionario> funcionarios;
 
     public Agendamento(TipoAgendamento tipoAgendamento, LocalDateTime dataAgendamento, StatusAgendamento statusAgendamento, String observacao) {
         this.tipoAgendamento = tipoAgendamento;
