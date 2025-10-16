@@ -1,15 +1,20 @@
 package com.project.extension.dto.agendamento;
 
 import com.project.extension.dto.endereco.EnderecoMapper;
+import com.project.extension.dto.funcionario.FuncionarioMapper;
 import com.project.extension.entity.Agendamento;
+import com.project.extension.entity.Funcionario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class AgendamentoMapper {
 
     private final EnderecoMapper enderecoMapper;
+    private final FuncionarioMapper funcionarioMapper;
 
     public Agendamento toEntity(AgendamentoRequestDto dto) {
         if (dto == null) return null;
@@ -21,7 +26,10 @@ public class AgendamentoMapper {
                 dto.observacao()
         );
 
-        agendamento.setEndereco(enderecoMapper.toEntity(dto.Endereco()));
+        agendamento.setEndereco(enderecoMapper.toEntity(dto.endereco()));
+
+        List<Funcionario> funcionarios = funcionarioMapper.toEntity(dto.funcionarios());
+        agendamento.setFuncionarios(funcionarios);
 
         return agendamento;
     }
@@ -35,7 +43,8 @@ public class AgendamentoMapper {
                 agendamento.getDataAgendamento(),
                 agendamento.getStatusAgendamento(),
                 agendamento.getObservacao(),
-                enderecoMapper.toResponse(agendamento.getEndereco())
+                enderecoMapper.toResponse(agendamento.getEndereco()),
+                funcionarioMapper.toResponse(agendamento.getFuncionarios())
         );
     }
 }

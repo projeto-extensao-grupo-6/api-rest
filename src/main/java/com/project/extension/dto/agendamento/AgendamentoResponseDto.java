@@ -1,10 +1,12 @@
 package com.project.extension.dto.agendamento;
 
 import com.project.extension.dto.endereco.EnderecoResponseDto;
+import com.project.extension.dto.funcionario.FuncionarioResponseDto;
 import com.project.extension.entity.StatusAgendamento;
 import com.project.extension.entity.TipoAgendamento;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record AgendamentoResponseDto(
         Integer id,
@@ -12,6 +14,7 @@ public record AgendamentoResponseDto(
         LocalDateTime dataAgendamento,
         StatusAgendamento statusAgendamento,
         String observacao,
-        EnderecoResponseDto endereco
+        EnderecoResponseDto endereco,
+        List<FuncionarioResponseDto> funcionarios
 ) {
 }
