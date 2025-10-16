@@ -1,5 +1,6 @@
 package com.project.extension.service;
 
+import com.project.extension.entity.Etapa;
 import com.project.extension.entity.Pedido;
 import com.project.extension.entity.Status;
 import com.project.extension.exception.naoencontrado.PedidoNaoEncontradoException;
@@ -17,6 +18,7 @@ public class PedidoService {
 
     private final PedidoRepository repository;
     private final StatusService statusService;
+    private final EtapaService etapaService;
 
     public Pedido cadastrar(Pedido pedido) {
 
@@ -30,6 +32,17 @@ public class PedidoService {
             log.info("Status criado: {} - {}", statusSalvo.getTipo(), statusSalvo.getNome());
         }
 
+        Etapa etapaSalvo = etapaService.buscarPorTipoAndEtapa(
+                pedido.getEtapa().getTipo(),
+                pedido.getEtapa().getNome()
+        );
+
+        if (etapaSalvo == null) {
+            etapaSalvo = etapaService.cadastrar(pedido.getEtapa());
+            log.info("Etapa criado: {} - {}", etapaSalvo.getTipo(), etapaSalvo.getNome());
+        }
+
+        pedido.setEtapa(etapaSalvo);
         pedido.setStatus(statusSalvo);
 
         Pedido pedidoSalvo = repository.save(pedido);
@@ -61,6 +74,14 @@ public class PedidoService {
             Status statusAtualizado = statusService.buscarPorTipoAndStatus(origem.getStatus().getTipo(),
                     origem.getStatus().getNome());
             destino.setStatus(statusAtualizado);
+        }
+
+        if (origem.getEtapa() != null) {
+            Etapa etapaAtualizada = etapaService.buscarPorTipoAndEtapa(
+                    origem.getEtapa().getTipo(),
+                    origem.getEtapa().getNome()
+            );
+            destino.setEtapa(etapaAtualizada);
         }
     }
 
