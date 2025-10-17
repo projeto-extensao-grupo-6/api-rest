@@ -2,6 +2,7 @@ package com.project.extension.dto.agendamento;
 
 import com.project.extension.dto.endereco.EnderecoMapper;
 import com.project.extension.dto.funcionario.FuncionarioMapper;
+import com.project.extension.dto.pedido.PedidoMapper;
 import com.project.extension.dto.status.StatusMapper;
 import com.project.extension.entity.Agendamento;
 import com.project.extension.entity.Funcionario;
@@ -17,6 +18,7 @@ public class AgendamentoMapper {
     private final EnderecoMapper enderecoMapper;
     private final FuncionarioMapper funcionarioMapper;
     private final StatusMapper statusMapper;
+    private final PedidoMapper pedidoMapper;
 
     public Agendamento toEntity(AgendamentoRequestDto dto) {
         if (dto == null) return null;
@@ -30,6 +32,8 @@ public class AgendamentoMapper {
         agendamento.setEndereco(enderecoMapper.toEntity(dto.endereco()));
 
         agendamento.setStatusAgendamento(statusMapper.toEntity(dto.statusAgendamento()));
+
+        agendamento.setPedido(pedidoMapper.toEntity(dto.pedido()));
 
         List<Funcionario> funcionarios = funcionarioMapper.toEntity(dto.funcionarios());
         agendamento.setFuncionarios(funcionarios);
@@ -46,6 +50,7 @@ public class AgendamentoMapper {
                 agendamento.getDataAgendamento(),
                 statusMapper.toResponse(agendamento.getStatusAgendamento()),
                 agendamento.getObservacao(),
+                pedidoMapper.toResponse(agendamento.getPedido()),
                 enderecoMapper.toResponse(agendamento.getEndereco()),
                 funcionarioMapper.toResponse(agendamento.getFuncionarios())
         );
