@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class EstoqueMapper {
-    public ProdutoResponseDto toProdutoResponseDTO(Produto produto) {
+    public ProdutoResponseDto toProdutoResponseDto(Produto produto) {
         ProdutoResponseDto dto = new ProdutoResponseDto();
         dto.setId(produto.getId());
         dto.setNome(produto.getNome());
@@ -18,24 +18,24 @@ public class EstoqueMapper {
         dto.setAtivo(produto.getAtivo());
 
         dto.setAtributos(produto.getAtributos() != null ? produto.getAtributos().stream()
-                .map(this::toAtributoDTO)
+                .map(this::toAtributoDto)
                 .collect(Collectors.toList()) : new ArrayList<>());
 
         dto.setEstoques(produto.getEstoque() != null ? produto.getEstoque().stream()
-                .map(this::toEstoqueResponseDTO)
+                .map(this::toEstoqueResponseDto)
                 .collect(Collectors.toList()) : new ArrayList<>());
 
         return dto;
     }
 
-    public AtributoProdutoDto toAtributoDTO(AtributoProduto atributo) {
+    public AtributoProdutoDto toAtributoDto(AtributoProduto atributo) {
         AtributoProdutoDto dto = new AtributoProdutoDto();
         dto.setTipo(atributo.getTipo());
         dto.setValor(atributo.getValor());
         return dto;
     }
 
-    public EstoqueResponseDto toEstoqueResponseDTO(Estoque estoque) {
+    public EstoqueResponseDto toEstoqueResponseDto(Estoque estoque) {
         EstoqueResponseDto dto = new EstoqueResponseDto();
         dto.setId(estoque.getId());
         dto.setQuantidade(estoque.getQuantidade());
