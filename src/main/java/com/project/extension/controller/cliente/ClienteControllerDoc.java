@@ -1,14 +1,12 @@
 package com.project.extension.controller.cliente;
 
-import com.project.extension.dto.cliente.ClienteRequestDto;
 import com.project.extension.dto.cliente.ClienteResponseDto;
-import com.project.extension.service.ClienteService;
+import com.project.extension.dto.cliente.ClienteRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,58 +17,89 @@ import java.util.List;
 
 public interface ClienteControllerDoc {
 
-
-    @PostMapping
-    @Operation(summary = "Cadastrar Cliente")
+    @PostMapping()
+    @Operation(summary = "Salvar cliente", description = """
+            Salvar cliente
+            ---
+            Salva cliente no banco de dados
+            """)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Quando o cliente é cadastrado com sucesso",
+            @ApiResponse(responseCode = "201", description = "Quando o cliente é cadastrada com sucesso",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ClienteResponseDto.class)
-                    )
-            ),
-            @ApiResponse(responseCode = "400", description = "Quando o corpo da requisição está incorreto",
+                    )),
+            @ApiResponse(responseCode = "400", description = "Quando o corpo de requisição está incorreto",
                     content = @Content())
     })
-     ResponseEntity<ClienteResponseDto> cadastrar(@RequestBody ClienteRequestDto request) ;
+    ResponseEntity<ClienteResponseDto> salvar(@RequestBody ClienteRequestDto request);
 
-    @GetMapping
-    @Operation(summary = "Listar Clientes")
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar cliente por id", description = """
+           Buscar cliente por id
+            ---
+           Buscar cliente por id no banco de dados
+           """)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de clientes retornada com sucesso",
+            @ApiResponse(responseCode = "200", description = "Quando o cliente é encontrado com sucesso",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ClienteResponseDto.class)
-                    )
-            ),
-            @ApiResponse(responseCode = "204", description = "Quando não há clientes cadastrados",
+                    )),
+            @ApiResponse(responseCode = "404", description = "Quando o cliente não for encontrado pelo id no banco de dados",
                     content = @Content())
     })
-     ResponseEntity<List<ClienteResponseDto>> listar() ;
+    ResponseEntity<ClienteResponseDto> buscarPorId(@PathVariable Integer id);
+
+
+    @GetMapping()
+    @Operation(summary = "Buscar todos os cliente", description = """
+           Buscar todos os cliente
+            ---
+           Buscar todos os cliente que estão cadastrados no banco de dados
+           """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Quando existe cliente cadastrado no banco de dados",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ClienteResponseDto.class)
+                    )),
+            @ApiResponse(responseCode = "204", description = "Quando não há nenhum cliente cadastrado no banco de dados",
+                    content = @Content())
+    })
+    ResponseEntity<List<ClienteResponseDto>> buscarTodos();
 
     @PutMapping("/{id}")
-    @Operation(summary = "Atualizar Cliente")
+    @Operation(summary = "Atualizar cliente", description = """
+           Atualizar cliente
+            ---
+           Atualizar cliente no banco de dados
+           """)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Quando o cliente é atualizado com sucesso",
+            @ApiResponse(responseCode = "200", description = "Quando cliente foi atualizado com sucesso no banco de dados",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ClienteResponseDto.class)
-                    )
-            ),
-            @ApiResponse(responseCode = "400", description = "Quando o corpo da requisição está incorreto",
+                    )),
+            @ApiResponse(responseCode = "400", description = "Quando o corpo de requisição está incorreto",
                     content = @Content()),
-            @ApiResponse(responseCode = "404", description = "Quando o cliente não é encontrado",
+            @ApiResponse(responseCode = "404", description = "Quando o cliente do ID não existe no banco de dados",
                     content = @Content())
     })
-    ResponseEntity<ClienteResponseDto> atualizar(@PathVariable Integer id, @RequestBody ClienteRequestDto request);
+    ResponseEntity<ClienteResponseDto> atualizar(@RequestBody ClienteRequestDto request, @PathVariable Integer id);
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar Cliente")
+    @Operation(summary = "Deletar cliente por id", description = """
+        Deleta um cliente no banco de dados com base no id fornecido.
+        """)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Quando o cliente é deletado com sucesso",
-                    content = @Content()),
-            @ApiResponse(responseCode = "404", description = "Quando o cliente não é encontrado",
+            @ApiResponse(responseCode = "200", description = "Usuário deletado com sucesso",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class)
+                    )),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado com o ID fornecido",
                     content = @Content())
     })
-    ResponseEntity<Void> deletar(@PathVariable Integer id) ;
+    ResponseEntity<String> deletar(@PathVariable Integer id);
 }
