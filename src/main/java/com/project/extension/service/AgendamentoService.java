@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -22,17 +23,14 @@ public class AgendamentoService {
     private final PedidoService pedidoService;
 
     public Agendamento salvar(Agendamento agendamento) {
-        // Endereço
         Endereco enderecoSalvo = enderecoService.buscarPorCep(agendamento.getEndereco().getCep());
         if (enderecoSalvo == null) {
             enderecoSalvo = enderecoService.cadastrar(agendamento.getEndereco());
         }
         agendamento.setEndereco(enderecoSalvo);
 
-        // Pedido
         agendamento.setPedido(pedidoService.buscarPorId(agendamento.getPedido().getId()));
 
-        // Status
         Status statusSalvo = statusService.buscarPorTipoAndStatus(
                 agendamento.getStatusAgendamento().getTipo(),
                 agendamento.getStatusAgendamento().getNome()
@@ -42,7 +40,6 @@ public class AgendamentoService {
         }
         agendamento.setStatusAgendamento(statusSalvo);
 
-        // Funcionários
         List<Funcionario> funcionariosSalvos = new ArrayList<>();
         for (Funcionario f : agendamento.getFuncionarios()) {
             Funcionario funcionarioSalvo;
@@ -68,44 +65,10 @@ public class AgendamentoService {
     public Agendamento editar(Agendamento origem, Integer id) {
         Agendamento destino = buscarPorId(id);
 
-        // Campos simples
-        destino.setTipoAgendamento(origem.getTipoAgendamento());
-        destino.setDataAgendamento(origem.getDataAgendamento());
-        destino.setObservacao(origem.getObservacao());
-
-        // Endereço
-        if (origem.getEndereco() != null) {
-            Endereco enderecoAtualizado = enderecoService.editar(origem.getEndereco(), origem.getEndereco().getId());
-            destino.setEndereco(enderecoAtualizado);
-        }
-
-        // Status
-        if (origem.getStatusAgendamento() != null) {
-            Status statusAtualizado = statusService.buscarOuCriarPorTipoENome(
-                    origem.getStatusAgendamento().getTipo(),
-                    origem.getStatusAgendamento().getNome()
-            );
-            destino.setStatusAgendamento(statusAtualizado);
-        }
-
-        // Funcionários
-        if (origem.getFuncionarios() != null) {
-            List<Funcionario> funcionariosValidados = new ArrayList<>();
-            for (Funcionario f : origem.getFuncionarios()) {
-                Funcionario funcionarioSalvo;
-                if (f.getId() != null) {
-                    funcionarioSalvo = funcionarioService.buscarPorId(f.getId());
-                } else {
-                    funcionarioSalvo = funcionarioService.buscarPorTelefone(f.getTelefone());
-                    if (funcionarioSalvo == null) {
-                        funcionarioSalvo = funcionarioService.cadastrar(f);
-                    }
-                }
-                funcionariosValidados.add(funcionarioSalvo);
-            }
-            destino.getFuncionarios().clear();
-            destino.getFuncionarios().addAll(funcionariosValidados);
-        }
+        atualizarDadosBasicos(destino, origem);
+        atualizarEndereco(destino, origem);
+        atualizarStatus(destino, origem);
+        atualizarFuncionarios(destino, origem);
 
         Agendamento atualizado = repository.save(destino);
         log.info("Agendamento atualizado com sucesso! ID: {}", atualizado.getId());
@@ -115,7 +78,6 @@ public class AgendamentoService {
     public void deletar(Integer id) {
         Agendamento agendamento = buscarPorId(id);
 
-        // Apenas desvincula funcionários, sem substituir lista imutável
         agendamento.getFuncionarios().clear();
         repository.save(agendamento);
 
@@ -134,5 +96,51 @@ public class AgendamentoService {
         List<Agendamento> lista = repository.findAll();
         log.info("Total de Agendamentos encontrados: {}", lista.size());
         return lista;
+    }
+
+    private void atualizarDadosBasicos(Agendamento destino, Agendamento origem) {
+        destino.setTipoAgendamento(origem.getTipoAgendamento());
+        destino.setDataAgendamento(origem.getDataAgendamento());
+        destino.setObservacao(origem.getObservacao());
+    }
+
+    private void atualizarEndereco(Agendamento destino, Agendamento origem) {
+        if (origem.getEndereco() != null) {
+            Endereco enderecoAtualizado = enderecoService.editar(origem.getEndereco(), origem.getEndereco().getId());
+            destino.setEndereco(enderecoAtualizado);
+        }
+    }
+
+    private void atualizarStatus(Agendamento destino, Agendamento origem) {
+        if (origem.getStatusAgendamento() != null) {
+            Status statusAtualizado = statusService.buscarOuCriarPorTipoENome(
+                    origem.getStatusAgendamento().getTipo(),
+                    origem.getStatusAgendamento().getNome()
+            );
+            destino.setStatusAgendamento(statusAtualizado);
+        }
+    }
+
+    private void atualizarFuncionarios(Agendamento destino, Agendamento origem) {
+        if (origem.getFuncionarios() != null) {
+            List<Funcionario> funcionariosValidados = origem.getFuncionarios().stream()
+                    .map(this::validarFuncionario)
+                    .collect(Collectors.toList());
+
+            destino.getFuncionarios().clear();
+            destino.getFuncionarios().addAll(funcionariosValidados);
+        }
+    }
+
+    private Funcionario validarFuncionario(Funcionario f) {
+        if (f.getId() != null) {
+            return funcionarioService.buscarPorId(f.getId());
+        }
+
+        Funcionario funcionarioSalvo = funcionarioService.buscarPorTelefone(f.getTelefone());
+        if (funcionarioSalvo == null) {
+            funcionarioSalvo = funcionarioService.cadastrar(f);
+        }
+        return funcionarioSalvo;
     }
 }
