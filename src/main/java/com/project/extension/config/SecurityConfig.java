@@ -37,7 +37,7 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/webjars/**",
             "/auth/login",
-            "/solicitacoes",
+            "/solicitacoes/**",
             "/estoque/**"
     };
 
@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .requestMatchers(ENDPOINTS_PUBLICOS).permitAll()
                         .anyRequest().authenticated()
                 ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
