@@ -16,10 +16,15 @@ public class AtributoProduto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", nullable = false)
     private Produto produto;
 
     private String tipo;
     private String valor;
+
+    public AtributoProduto(String tipo, String valor) {
+        this.tipo = tipo;
+        this.valor = valor;
+    }
 }
