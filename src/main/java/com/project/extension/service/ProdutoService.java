@@ -94,7 +94,6 @@ public class ProdutoService {
             produtoDestino.setAtributos(new ArrayList<>());
         }
 
-        // Map dos atributos atuais por ID para facilitar comparação
         Map<Integer, AtributoProduto> atributosAtuais = produtoDestino.getAtributos().stream()
                 .filter(attr -> attr.getId() != null)
                 .collect(Collectors.toMap(AtributoProduto::getId, attr -> attr));
@@ -105,18 +104,15 @@ public class ProdutoService {
             atributoOrigem.setProduto(produtoDestino);
 
             if (atributoOrigem.getId() != null && atributosAtuais.containsKey(atributoOrigem.getId())) {
-                // Atualiza atributo existente
                 AtributoProduto attrAtualizado = atributoProdutoService.editar(atributoOrigem, atributoOrigem.getId());
                 atributosAtualizados.add(attrAtualizado);
-                atributosAtuais.remove(atributoOrigem.getId()); // remove do map para saber o que foi deletado
+                atributosAtuais.remove(atributoOrigem.getId());
             } else {
-                // Novo atributo
                 AtributoProduto attrNovo = atributoProdutoService.cadastrar(atributoOrigem, produtoDestino);
                 atributosAtualizados.add(attrNovo);
             }
         }
 
-        // Os que sobraram no map são atributos que não existem mais na origem => deletar
         for (AtributoProduto attrRemover : atributosAtuais.values()) {
             atributoProdutoService.deletar(attrRemover.getId());
         }
