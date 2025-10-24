@@ -28,7 +28,7 @@ public class AtributoProdutoService {
 
     public AtributoProduto buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> {
-            log.error("AtríbutoP roduto com ID " + id + " não encontrado");
+            log.error("Atributo Produto com ID " + id + " não encontrado");
             return new AtributoProdutoNaoEncontradoException();
         });
     }
