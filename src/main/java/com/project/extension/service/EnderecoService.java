@@ -25,7 +25,7 @@ public class EnderecoService {
 
     public Endereco buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> {
-            log.error("Agendamento com ID {} não encontrado", id);
+            log.error("Endereço com ID {} não encontrado", id);
             return new EnderecoNaoEncontradoException();
         });
     }

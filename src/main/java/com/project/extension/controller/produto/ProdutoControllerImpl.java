@@ -24,7 +24,7 @@ public class ProdutoControllerImpl implements ProdutoControllerDoc{
     public ResponseEntity<ProdutoResponseDto> salvar(ProdutoRequestDto request) {
         Produto produtoSalvar = mapper.toEntity(request);
         Produto produtoSalvo = service.cadastrar(produtoSalvar);
-        return ResponseEntity.status(201).body(mapper.toResponse(produtoSalvar));
+        return ResponseEntity.status(201).body(mapper.toResponse(produtoSalvo));
     }
 
     @Override

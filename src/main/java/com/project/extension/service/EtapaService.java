@@ -24,7 +24,7 @@ public class EtapaService {
 
     public Etapa buscarPorTipoAndEtapa(String tipo, String nome) {
         return repository.findByTipoAndNome(tipo, nome).orElseThrow(() -> {
-            log.error("Etapa do tipo:  " + tipo + "e nome: " + nome + "não encontrado");
+            log.error("Etapa do tipo:  " + tipo + " e nome: " + nome + " não encontrado");
             return new EtapaNaoEncontradoException();
         });
     }

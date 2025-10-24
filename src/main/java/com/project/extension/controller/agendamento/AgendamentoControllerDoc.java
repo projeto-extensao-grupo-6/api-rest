@@ -45,7 +45,7 @@ public interface AgendamentoControllerDoc {
                             mediaType = "application/json",
                             schema = @Schema(implementation = AgendamentoResponseDto.class)
                     )),
-            @ApiResponse(responseCode = "404", description = "Quando o usuaŕio não for encontrado pelo id no banco de dados",
+            @ApiResponse(responseCode = "404", description = "Quando o agendamento não for encontrado pelo id no banco de dados",
                     content = @Content())
     })
     ResponseEntity<AgendamentoResponseDto> buscarPorId(@PathVariable Integer id);
