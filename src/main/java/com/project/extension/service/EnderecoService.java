@@ -36,7 +36,7 @@ public class EnderecoService {
 
     public List<Endereco> listar() {
         List<Endereco> enderecos = repository.findAll();
-        log.info("Total de endereçocs encontrados: " + enderecos.size());
+        log.info("Total de endereços encontrados: " + enderecos.size());
         return enderecos;
     }
 
