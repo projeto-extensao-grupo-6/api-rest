@@ -26,7 +26,6 @@ public class AgendamentoService {
     public Agendamento salvar(Agendamento agendamento) {
         Agendamento agendamentoProcessado = agendamentoContext.processarAgendamento(agendamento);
         Agendamento agendamentoSalvo = repository.save(agendamentoProcessado);
-        log.info(agendamentoSalvo.getTipoAgendamento().toString());
         log.info("Agendamento salvo com sucesso! ID: {}", agendamentoSalvo.getId());
         return agendamentoSalvo;
     }

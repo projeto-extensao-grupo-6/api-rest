@@ -2,7 +2,6 @@ package com.project.extension.service;
 
 import com.project.extension.entity.AgendamentoProduto;
 import com.project.extension.exception.naoencontrado.AgendamentoProdutoNaoEncontradoException;
-import com.project.extension.exception.naoencontrado.ProdutoNaoEncontradoException;
 import com.project.extension.repository.AgendamentoProdutoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
