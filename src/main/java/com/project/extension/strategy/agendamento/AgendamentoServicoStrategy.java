@@ -17,17 +17,17 @@ public class AgendamentoServicoStrategy implements AgendamentoStrategy {
     private final EnderecoService enderecoService;
     private final FuncionarioService funcionarioService;
     private final EstoqueService estoqueService;
+    private final EtapaService etapaService;
     private final StatusService statusService;
 
     @Override
     public Agendamento agendar(Agendamento agendamento) {
 
         Pedido pedido = agendamento.getPedido();
-        if (pedido == null || !"ORCAMENTO APROVADO".equals(pedido.getStatus().getNome())) {
+        if (pedido == null || !"ORCAMENTO APROVADO".equals(pedido.getEtapa().getNome())) {
             throw new IllegalStateException("Só é possível agendar serviço se o orçamento estiver aprovado.");
         }
         agendamento.setTipoAgendamento(TipoAgendamento.SERVICO);
-        log.info(agendamento.getTipoAgendamento().toString());
 
         if (agendamento.getFuncionarios() != null && !agendamento.getFuncionarios().isEmpty()) {
             List<Funcionario> funcionariosSalvos = new ArrayList<>();
@@ -78,11 +78,11 @@ public class AgendamentoServicoStrategy implements AgendamentoStrategy {
             agendamento.setStatusAgendamento(statusAgendamento);
         }
 
-        Status statusServico = statusService.buscarPorTipoAndStatus("PEDIDO", "SERVIÇO AGENDADO");
-        if (statusServico == null) {
-            statusServico = statusService.cadastrar(new Status("PEDIDO", "SERVIÇO AGENDADO"));
+        Etapa etapaPedido = etapaService.buscarPorTipoAndEtapa("PEDIDO", "SERVIÇO AGENDADO");
+        if (etapaPedido == null) {
+            etapaPedido = etapaService.cadastrar(new Etapa("PEDIDO", "SERVIÇO AGENDADO"));
         }
-        pedido.setStatus(statusServico);
+        pedido.setEtapa(etapaPedido);
 
         return agendamento;
     }
