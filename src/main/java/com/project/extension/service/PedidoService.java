@@ -45,8 +45,8 @@ public class PedidoService {
         }
 
         Cliente clienteAssociado = clienteService.buscarPorId(
-                pedido.getId(),
-                pedido.getNome()
+                pedido.getCliente.getId(),
+                pedido.getCliente.getNome()
         );
 
         if (clienteAssociado == null){
