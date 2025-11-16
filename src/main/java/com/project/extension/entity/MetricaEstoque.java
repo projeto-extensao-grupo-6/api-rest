@@ -15,10 +15,6 @@ public class Metrica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "produto_id")
-    private Produto produto;
-
     @Column(name = "nivel_minimo")
     private Integer nivelMinimo;
 
