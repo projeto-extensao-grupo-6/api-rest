@@ -139,6 +139,8 @@ CREATE TABLE historico_estoque (
     quantidade_atual INT,
     observacao VARCHAR(255),
     data_movimentacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data e hora da movimentação',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de entrada no estoque',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
     FOREIGN KEY (estoque_id) REFERENCES estoque(id),
     FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
@@ -148,6 +150,8 @@ CREATE TABLE metrica_estoque (
     produto_id INT NOT NULL,
     nivel_minimo INT DEFAULT 0,
     nivel_maximo INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de entrada no estoque',
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
     FOREIGN KEY (produto_id) REFERENCES produto(id)
 );
 
