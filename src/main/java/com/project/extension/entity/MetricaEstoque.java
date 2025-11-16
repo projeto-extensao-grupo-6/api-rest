@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Metrica {
+public class MetricaEstoque {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +20,9 @@ public class Metrica {
 
     @Column(name = "nivel_minimo")
     private Integer nivelMaximo;
+
+    public MetricaEstoque(Integer nivelMinimo, Integer nivelMaximo) {
+        this.nivelMinimo = nivelMinimo;
+        this.nivelMaximo = nivelMaximo;
+    }
 }
