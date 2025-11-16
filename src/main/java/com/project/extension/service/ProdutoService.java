@@ -1,6 +1,7 @@
 package com.project.extension.service;
 
 import com.project.extension.entity.AtributoProduto;
+import com.project.extension.entity.MetricaEstoque;
 import com.project.extension.entity.Produto;
 import com.project.extension.exception.naoencontrado.ProdutoNaoEncontradoException;
 import com.project.extension.repository.ProdutoRepository;
@@ -20,12 +21,17 @@ public class ProdutoService {
 
     private final ProdutoRepository repository;
     private final AtributoProdutoService atributoProdutoService;
+    private final MetricaEstoqueService metricaEstoqueService;
 
     public Produto cadastrar(Produto produto) {
         if (produto.getAtributos() != null) {
             for (AtributoProduto atributo : produto.getAtributos()) {
                 atributo.setProduto(produto);
             }
+        }
+
+        if (produto.getMetricaEstoqueDeEstoque() != null) {
+            produto.setMetricaEstoqueDeEstoque(metricaEstoqueService.cadastrar(produto.getMetricaEstoqueDeEstoque()));
         }
 
         Produto produtoSalvo = repository.save(produto);
@@ -39,8 +45,6 @@ public class ProdutoService {
 
         return produtoSalvo;
     }
-
-
 
     public Produto buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> {
@@ -60,6 +64,7 @@ public class ProdutoService {
 
         this.atualizarDadosBasicos(destino, origem);
         this.atualizarAtributosProduto(destino, origem);
+        this.atualizarMetricaEstoque(destino, origem);
 
         Produto produtoAtualizado = this.cadastrar(destino);
         log.info("Produto atualizado com sucesso!");
@@ -120,4 +125,27 @@ public class ProdutoService {
         produtoDestino.setAtributos(atributosAtualizados);
     }
 
+
+    public void atualizarMetricaEstoque(Produto produtoDestino, Produto produtoOrigem) {
+        if (produtoOrigem.getMetricaEstoqueDeEstoque() == null) return;
+
+        if (produtoDestino.getMetricaEstoqueDeEstoque() != null &&
+                produtoDestino.getMetricaEstoqueDeEstoque().getId() != null) {
+
+            Integer id = produtoDestino.getMetricaEstoqueDeEstoque().getId();
+            MetricaEstoque metricaAtualizada = metricaEstoqueService.editar(
+                    produtoOrigem.getMetricaEstoqueDeEstoque(),
+                    id
+            );
+
+            produtoDestino.setMetricaEstoqueDeEstoque(metricaAtualizada);
+            return;
+        }
+
+        MetricaEstoque novaMetrica = metricaEstoqueService.cadastrar(
+                produtoOrigem.getMetricaEstoqueDeEstoque()
+        );
+
+        produtoDestino.setMetricaEstoqueDeEstoque(novaMetrica);
+    }
 }

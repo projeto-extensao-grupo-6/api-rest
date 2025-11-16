@@ -99,4 +99,6 @@ public interface PedidoControllerDoc {
                     content = @Content())
     })
     ResponseEntity<String> deletar(@PathVariable Integer id);
+
+    ?etapa=PENDENTE
 }
