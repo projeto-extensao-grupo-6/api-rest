@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record AgendamentoProdutoRequestDto(
-        @NotNull @Positive Integer produtoId,
-        @NotNull @Positive Integer quantidadeUtilizada,
-        @NotNull @Positive Integer quantidadeReservada
+        @Positive Integer produtoId,
+        @Positive Integer quantidadeUtilizada,
+        @Positive Integer quantidadeReservada
 ) {
 }
