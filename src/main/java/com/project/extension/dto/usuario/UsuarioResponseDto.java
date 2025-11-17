@@ -5,5 +5,6 @@ public record UsuarioResponseDto(
         String nome,
         String cpf,
         String email,
-        String telefone
+        String telefone,
+        Boolean firstLogin
 ) {}

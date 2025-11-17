@@ -1,5 +1,6 @@
 package com.project.extension.service;
 
+import com.project.extension.dto.usuario.UsuarioMapper;
 import com.project.extension.entity.Usuario;
 import com.project.extension.exception.naoencontrado.UsuarioNaoEncontradoException;
 import com.project.extension.repository.UsuarioRepository;
@@ -18,6 +19,7 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository repository;
     private final LogService logService;
+    private final UsuarioMapper usuarioMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -97,5 +99,22 @@ public class UsuarioService {
 
     public String encodePassword(String senha) {
         return passwordEncoder.encode(senha);
+    }
+
+    public void definirSenhaInicial(Integer idUsuario, String novaSenha) {
+        Usuario usuario = buscarPorId(idUsuario);
+
+        // 1. Criptografa a nova senha
+        String senhaCriptografada = passwordEncoder.encode(novaSenha);
+
+        // 2. Atualiza a entidade: seta a senha e firstLogin = false
+        // Utilizamos o mapper para aplicar a lógica de atualização (definida anteriormente)
+        usuario = usuarioMapper.updateSenha(usuario, senhaCriptografada);
+
+        // 3. Persiste a entidade atualizada
+        repository.save(usuario);
+
+        String mensagem = String.format("Senha inicial definida com sucesso para o Usuário ID %d. 'First Login' marcado como FALSE.", idUsuario);
+        logService.success(mensagem);
     }
 }

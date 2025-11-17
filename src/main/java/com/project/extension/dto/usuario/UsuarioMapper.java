@@ -30,8 +30,17 @@ public class UsuarioMapper {
                 usuario.getNome(),
                 usuario.getCpf(),
                 usuario.getEmail(),
-                usuario.getTelefone()
+                usuario.getTelefone(),
+                usuario.getFirstLogin()
         );
+    }
+
+    public Usuario updateSenha(Usuario usuarioExistente, String novaSenhaCriptografada) {
+        if (usuarioExistente == null) return null;
+
+        usuarioExistente.setSenha(novaSenhaCriptografada);
+        usuarioExistente.setFirstLogin(false);
+        return usuarioExistente;
     }
 
     public List<UsuarioResponseDto> toResponseList(List<Usuario> usuarios) {
