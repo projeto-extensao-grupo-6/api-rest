@@ -57,6 +57,7 @@ public class UsuarioService {
 
     public void deletar(Integer id) {
         Usuario usuarioParaDeletar = this.buscarPorId(id);
+        enderecoService.deletar(usuarioParaDeletar.getEndereco().getId());
         repository.deleteById(id);
 
         String mensagem = String.format("Usuário ID %d (E-mail: %s) deletado com sucesso.",
