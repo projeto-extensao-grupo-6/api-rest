@@ -38,7 +38,7 @@ public class SecurityConfig {
             "/webjars/**",
             "/auth/login",
             "/solicitacoes/**",
-            "/usuarios/definirSenhaInicial"
+            "/usuarios/definir-senha"
     };
 
     @Bean
