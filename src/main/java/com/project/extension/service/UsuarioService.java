@@ -89,21 +89,34 @@ public class UsuarioService {
         log.trace("Campos do usuário atualizados em memória.");
     }
 
-    public void atualizarEndereco(Usuario destino, Usuario origem) {
-        Endereco endereco = enderecoService.editar(origem.getEndereco(), origem.getEndereco().getId());
-        destino.setEndereco(endereco);
+    private Endereco atualizarEndereco(Endereco antigo, Endereco novo) {
+        if (antigo == null && novo != null) {
+            return enderecoService.cadastrar(novo);
+        }
+
+        if (novo == null) {
+            return antigo;
+        }
+
+        enderecoService.editar(novo, antigo.getId());
+        return enderecoService.buscarPorId(antigo.getId());
     }
 
-    public Usuario editar(Integer id, Usuario usuarioAtualizado) {
-        Usuario usuarioExistente = buscarPorId(id);
+    public Usuario editar(Usuario origem, Integer id) {
 
-        this.atualizarCampos(usuarioExistente, usuarioAtualizado);
-        this.atualizarEndereco(usuarioExistente, usuarioAtualizado);
+        Usuario destino = this.buscarPorId(id);
 
-        Usuario atualizado = repository.save(usuarioExistente);
-        String mensagem = String.format("Usuário ID %d editado com sucesso. E-mail: %s.",
-                atualizado.getId(), atualizado.getEmail());
-        logService.info(mensagem);
+        this.atualizarCampos(destino, origem);
+        destino.setEndereco(this.atualizarEndereco(destino.getEndereco(), origem.getEndereco()));
+
+        Usuario atualizado = repository.save(destino);
+
+        logService.info(String.format(
+                "Usuário ID %d atualizado com sucesso. Nome: %s.",
+                atualizado.getId(),
+                atualizado.getNome()
+        ));
+
         return atualizado;
     }
 
