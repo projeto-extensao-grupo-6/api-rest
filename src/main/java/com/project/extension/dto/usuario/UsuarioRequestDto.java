@@ -11,5 +11,5 @@ public record UsuarioRequestDto(
         @NotNull String cpf,
         @NotNull String senha,
         @NotNull String telefone,
-        @Valid @NotNull EnderecoRequestDto endereco
+        @Valid EnderecoRequestDto endereco
         ) {}
