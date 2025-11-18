@@ -31,8 +31,7 @@ public class Produto {
     @OneToMany(mappedBy = "produto")
     private List<AgendamentoProduto> agendamentoProdutos;
 
-    @OneToOne
-    @JoinColumn(name = "metrica_estoque_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private MetricaEstoque metricaEstoque;
 
     public Produto(String nome, String descricao, String unidademedida, Double preco, Boolean ativo) {

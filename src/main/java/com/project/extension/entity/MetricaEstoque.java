@@ -22,9 +22,6 @@ public class MetricaEstoque {
     @Column(name = "nivel_maximo")
     private Integer nivelMaximo;
 
-    @OneToOne(mappedBy = "metricaEstoque")
-    private Produto produto;
-
     public MetricaEstoque(Integer nivelMinimo, Integer nivelMaximo) {
         this.nivelMinimo = nivelMinimo;
         this.nivelMaximo = nivelMaximo;
