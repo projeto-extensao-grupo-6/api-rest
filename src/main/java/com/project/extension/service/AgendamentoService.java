@@ -42,6 +42,7 @@ public class AgendamentoService {
 
         atualizarDadosBasicos(destino, origem);
         atualizarEndereco(destino, origem);
+        atualizarHorario(destino, origem);
         atualizarStatus(destino, origem);
         atualizarFuncionarios(destino, origem);
 
@@ -85,6 +86,8 @@ public class AgendamentoService {
 
     private void atualizarDadosBasicos(Agendamento destino, Agendamento origem) {
         destino.setTipoAgendamento(origem.getTipoAgendamento());
+        destino.setInicioAgendamento(origem.getInicioAgendamento());
+        destino.setFimAgendamento(origem.getFimAgendamento());
         destino.setDataAgendamento(origem.getDataAgendamento());
         destino.setObservacao(origem.getObservacao());
         log.trace("Dados básicos do agendamento atualizados.");
@@ -135,5 +138,12 @@ public class AgendamentoService {
             funcionarioSalvo = funcionarioService.cadastrar(f);
         }
         return funcionarioSalvo;
+    }
+
+    private void atualizarHorario(Agendamento destino, Agendamento origem) {
+        if(destino.getInicioAgendamento() != null && destino.getFimAgendamento() != null) {
+            destino.setInicioAgendamento(origem.getInicioAgendamento());
+            destino.setFimAgendamento(origem.getFimAgendamento());
+        }
     }
 }

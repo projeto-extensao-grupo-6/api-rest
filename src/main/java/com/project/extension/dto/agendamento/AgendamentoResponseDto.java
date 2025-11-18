@@ -14,6 +14,8 @@ public record AgendamentoResponseDto(
         Integer id,
         TipoAgendamento tipoAgendamento,
         LocalDateTime dataAgendamento,
+        LocalDateTime inicioAgendamento,
+        LocalDateTime fimAgendamento,
         StatusResponseDto statusAgendamento,
         String observacao,
         PedidoResponseDto pedido,

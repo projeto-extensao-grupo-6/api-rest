@@ -24,6 +24,13 @@ public class Agendamento {
     private TipoAgendamento tipoAgendamento;
 
     private LocalDateTime dataAgendamento;
+
+    @Column(name = "inicio_agendamento", nullable = false)
+    private LocalDateTime inicioAgendamento;
+
+    @Column(name = "fim_agendamento", nullable = false)
+    private LocalDateTime fimAgendamento;
+
     private String observacao;
 
     @ManyToOne
@@ -50,9 +57,12 @@ public class Agendamento {
     private List<AgendamentoProduto> agendamentoProdutos = new ArrayList<>();
 
     public Agendamento(TipoAgendamento tipoAgendamento, LocalDateTime dataAgendamento,
+                        LocalDateTime inicioAgendamento,  LocalDateTime fimAgendamento,
                         String observacao) {
         this.tipoAgendamento = tipoAgendamento;
         this.dataAgendamento = dataAgendamento;
+        this.inicioAgendamento = inicioAgendamento;
+        this.fimAgendamento = fimAgendamento;
         this.observacao = observacao;
     }
 }
