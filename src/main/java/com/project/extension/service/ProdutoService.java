@@ -1,6 +1,7 @@
 package com.project.extension.service;
 
 import com.project.extension.entity.AtributoProduto;
+import com.project.extension.entity.MetricaEstoque;
 import com.project.extension.entity.Produto;
 import com.project.extension.exception.naoencontrado.ProdutoNaoEncontradoException;
 import com.project.extension.repository.ProdutoRepository;
@@ -17,9 +18,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 public class ProdutoService {
-
     private final ProdutoRepository repository;
     private final AtributoProdutoService atributoProdutoService;
+    private final MetricaEstoqueService metricaEstoqueService;
+    private final LogService logService;
 
     public Produto cadastrar(Produto produto) {
         if (produto.getAtributos() != null) {
@@ -28,8 +30,15 @@ public class ProdutoService {
             }
         }
 
+        if (produto.getMetricaEstoque() != null) {
+            produto.setMetricaEstoque(metricaEstoqueService.cadastrar(produto.getMetricaEstoque()));
+        }
+
         Produto produtoSalvo = repository.save(produto);
-        log.info("Produto salvo com sucesso!");
+        String acao = produto.getId() == null ? "cadastrado" : "atualizado";
+        String mensagem = String.format("Produto ID %d %s com sucesso. Nome: %s, Preço: %.2f.",
+                produtoSalvo.getId(), acao, produtoSalvo.getNome(), produtoSalvo.getPreco());
+        logService.success(mensagem);
 
         if (produto.getAtributos() != null) {
             for (AtributoProduto atributo : produto.getAtributos()) {
@@ -40,18 +49,18 @@ public class ProdutoService {
         return produtoSalvo;
     }
 
-
-
     public Produto buscarPorId(Integer id) {
         return repository.findById(id).orElseThrow(() -> {
-            log.error("Produto com ID " + id + " não encontrado");
+            String mensagem = String.format("Falha na busca: Produto com ID %d não encontrado.", id);
+            logService.error(mensagem);
+            log.warn(mensagem);
             return new ProdutoNaoEncontradoException();
         });
     }
 
     public List<Produto> listar() {
         List<Produto> produtos = repository.findAll();
-        log.info("Total de produtos encontrados: " + produtos.size());
+        logService.info(String.format("Busca por todos os produtos realizada. Total de registros: %d.", produtos.size()));
         return produtos;
     }
 
@@ -60,6 +69,7 @@ public class ProdutoService {
 
         this.atualizarDadosBasicos(destino, origem);
         this.atualizarAtributosProduto(destino, origem);
+        this.atualizarMetricaEstoque(destino, origem);
 
         Produto produtoAtualizado = this.cadastrar(destino);
         log.info("Produto atualizado com sucesso!");
@@ -75,8 +85,15 @@ public class ProdutoService {
             }
         }
 
+        if (produto.getMetricaEstoque() != null) {
+            metricaEstoqueService.deletar(produto.getMetricaEstoque().getId());
+            produto.setMetricaEstoque(null);
+        }
+
         repository.delete(produto);
-        log.info("Produto deletado com sucesso");
+        String mensagem = String.format("Produto ID %d (Nome: %s) deletado com sucesso, juntamente com seus atributos.",
+                id, produto.getNome());
+        logService.info(mensagem);
     }
 
     private void atualizarDadosBasicos(Produto destino, Produto origem) {
@@ -116,8 +133,28 @@ public class ProdutoService {
         for (AtributoProduto attrRemover : atributosAtuais.values()) {
             atributoProdutoService.deletar(attrRemover.getId());
         }
-
         produtoDestino.setAtributos(atributosAtualizados);
     }
+    public void atualizarMetricaEstoque(Produto produtoDestino, Produto produtoOrigem) {
+        if (produtoOrigem.getMetricaEstoque() == null) return;
 
+        if (produtoDestino.getMetricaEstoque() != null &&
+                produtoDestino.getMetricaEstoque().getId() != null) {
+
+            Integer id = produtoDestino.getMetricaEstoque().getId();
+            MetricaEstoque metricaAtualizada = metricaEstoqueService.editar(
+                    produtoOrigem.getMetricaEstoque(),
+                    id
+            );
+
+            produtoDestino.setMetricaEstoque(metricaAtualizada);
+            return;
+        }
+
+        MetricaEstoque novaMetrica = metricaEstoqueService.cadastrar(
+                produtoOrigem.getMetricaEstoque()
+        );
+
+        produtoDestino.setMetricaEstoque(novaMetrica);
+    }
 }
