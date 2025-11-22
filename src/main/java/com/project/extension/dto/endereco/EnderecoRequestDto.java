@@ -9,6 +9,7 @@ public record EnderecoRequestDto(
         @NotBlank String cidade,
         @NotBlank String bairro,
         @NotBlank Character uf,
-        @NotBlank String pais
+        @NotBlank String pais,
+        @NotBlank Integer numero
 ) {
 }
