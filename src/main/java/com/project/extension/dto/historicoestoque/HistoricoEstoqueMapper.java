@@ -22,6 +22,7 @@ public class HistoricoEstoqueMapper {
                 historicoEstoque.getQuantidade(),
                 historicoEstoque.getQuantidadeAtual(),
                 historicoEstoque.getObservacao(),
+                historicoEstoque.getCreated_at(),
                 estoqueMapper.toResponse(historicoEstoque.getEstoque()),
                 usuarioMapper.toResponseDto(historicoEstoque.getUsuario())
         );

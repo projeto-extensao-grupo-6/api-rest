@@ -35,4 +35,6 @@ public class HistoricoEstoque {
     private Integer quantidadeAtual;
 
     private String observacao;
+
+    private LocalDateTime created_at;
 }
