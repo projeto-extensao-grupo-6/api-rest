@@ -9,5 +9,5 @@ public record FuncionarioRequestDto(
         @NotBlank String funcao,
         @NotBlank String contrato,
         @NotBlank String escala,
-        @NotBlank String status
+        String status
 ) {}
