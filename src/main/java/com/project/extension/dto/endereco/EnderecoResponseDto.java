@@ -8,7 +8,7 @@ public record EnderecoResponseDto(
         String cidade,
         String bairro,
         String uf,
-        String pais
+        String pais,
         Integer numero
 ) {
 }
