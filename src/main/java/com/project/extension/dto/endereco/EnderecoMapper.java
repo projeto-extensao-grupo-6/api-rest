@@ -47,7 +47,8 @@ public class EnderecoMapper {
                 dto.cidade(),
                 dto.bairro(),
                 dto.uf(),
-                dto.pais()
+                dto.pais(),
+                dto.numero()
         );
     }
 }
