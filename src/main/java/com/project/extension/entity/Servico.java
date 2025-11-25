@@ -28,7 +28,7 @@ public class Servico {
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "etapa_id")
     private Etapa etapa;
 
