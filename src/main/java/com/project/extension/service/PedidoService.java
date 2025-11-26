@@ -1,15 +1,19 @@
 package com.project.extension.service;
 
-import com.project.extension.entity.Cliente;
-import com.project.extension.entity.Etapa;
-import com.project.extension.entity.Pedido;
-import com.project.extension.entity.Status;
+import com.project.extension.dto.itemproduto.ItemProdutoRequestDto;
+import com.project.extension.dto.itemproduto.PedidoProdutoMapper;
+import com.project.extension.dto.itemproduto.PedidoProdutoRequestDto;
+import com.project.extension.dto.itemproduto.PedidoProdutoResponseDto;
+import com.project.extension.entity.*;
 import com.project.extension.exception.naoencontrado.PedidoNaoEncontradoException;
+import com.project.extension.repository.EstoqueRepository;
 import com.project.extension.repository.PedidoRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -21,6 +25,51 @@ public class PedidoService {
     private final EtapaService etapaService;
     private final ClienteService clienteService;
     private final LogService logService;
+    private final EstoqueRepository estoqueRepository;
+    private final PedidoProdutoMapper pedidoProdutoMapper;
+
+
+    @Transactional
+    public PedidoProdutoResponseDto criarPedidoProduto(PedidoProdutoRequestDto dto) {
+        // 1. CRIAÇÃO DO CABEÇALHO DO PEDIDO
+        Pedido pedido = pedidoProdutoMapper.toEntity(dto);
+        BigDecimal valorTotal = BigDecimal.ZERO;
+
+        // 2. PROCESSAMENTO E VALIDAÇÃO DOS ITENS
+        for (ItemProdutoRequestDto itemDto : dto.itens()) {
+            Estoque estoque = estoqueRepository.findById(itemDto.estoqueId())
+                    .orElseThrow(() -> new RuntimeException("Item de Estoque não encontrado."));
+
+            // 3. VALIDAÇÃO CRÍTICA DE ESTOQUE
+           if (itemDto.quantidadeSolicitada().compareTo(BigDecimal.valueOf(estoque.getQuantidadeDisponivel())) > 0)
+           {
+               String mensagem = String.format("Estoque insuficiente para o produto ID %d. Quantidade disponível: %d.",
+                       estoque.getProduto().getId(),
+                       estoque.getQuantidadeDisponivel());
+               logService.error(mensagem);
+               // throw new EstoqueInsuficienteException(mensagem);
+           }
+           // 4. BAIXA DE ESTOQUE (Atualização da Entidade)
+           estoque.setQuantidadeDisponivel(estoque.getQuantidadeDisponivel() - itemDto.quantidadeSolicitada().intValue());
+           estoqueRepository.save(estoque);
+           // 5. REGISTRO DO ITEM E CÁLCULO DO TOTAL
+           ItemPedido itemPedido = pedidoProdutoMapper.toItemEntity(itemDto, pedido);
+           BigDecimal subtotal = itemDto.quantidadeSolicitada().multiply(itemDto.precoUnitarioNegociado());
+           itemPedido.setSubtotal(subtotal);
+           valorTotal = valorTotal.add(subtotal);
+           pedido.getItensPedido().add(itemPedido);
+        }
+
+        // 6. FINALIZAÇÃO E SALVAMENTO DO PEDIDO
+        pedido.setValorTotal(valorTotal);
+        Pedido pedidoSalvo = repository.save(pedido);
+
+        // 7. LOG DE SUCESSO E RETORNO
+        String mensagem = String.format("Novo Pedido ID %d (PRODUTO) cadastrado com sucesso. Total: %.2f.",
+                pedidoSalvo.getId(), valorTotal);
+        logService.success(mensagem);
+        return pedidoProdutoMapper.toResponse(pedidoSalvo);
+    }
 
     public Pedido cadastrar(Pedido pedido) {
         Status statusSalvo = statusService.buscarPorTipoAndStatus(
