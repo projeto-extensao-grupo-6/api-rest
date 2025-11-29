@@ -1,0 +1,53 @@
+package com.project.extension.controller.dashboard;
+
+
+import com.project.extension.dto.dashboard.AgendamentosHojeResponseDto;
+import com.project.extension.dto.dashboard.ItensAbaixoMinimoKpiResponseDto;
+import com.project.extension.dto.produto.ProdutoResponseDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@Tag(name = "Dashboard", description = "Getters de KPI ou informações utilizadas no Painel de Controle/Dashboard")
+public interface DashboardControllerDoc {
+
+    @GetMapping("/itens-abaixo-minimo")
+    @Operation(
+            summary = "Quantidade de itens abaixo do nível mínimo",
+            description = "Retorna o total de itens no estoque cuja quantidade disponível está abaixo do nível mínimo definido na métrica de estoque."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Consulta realizada com sucesso",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    type = "integer",
+                                    example = "7",
+                                    description = "Número total de itens abaixo do mínimo"
+                            )
+                    )
+            )
+    })
+    ResponseEntity<ItensAbaixoMinimoKpiResponseDto> getItensAbaixoMinimo();
+
+    @GetMapping("/qtd-agendamentos-hoje")
+    @Operation(summary = "Buscar quantidade de agendamentos hoje", description = """
+               Busca na quantidade de agendamentos no dia de hoje
+           """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = """
+                    Puxa qualquer valor do banco, se a tabela estiver sem registros no dia ou vazia retorna 0""",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProdutoResponseDto.class)
+                    )),
+    })
+    ResponseEntity<AgendamentosHojeResponseDto> getQtdAgendamentosHoje();
+}
