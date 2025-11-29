@@ -68,6 +68,25 @@ public interface PedidoControllerDoc {
     })
     ResponseEntity<List<PedidoResponseDto>> buscarTodos();
 
+
+    @GetMapping("findAllBy")
+    @Operation(
+            summary = "Buscar pedidos por etapa",
+            description = """
+            Retorna todos os pedidos filtrados pelo nome da etapa.
+            """
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pedidos encontrados",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PedidoResponseDto.class)
+                    )),
+            @ApiResponse(responseCode = "204", description = "Nenhum pedido encontrado",
+                    content = @Content())
+    })
+    ResponseEntity<List<PedidoResponseDto>> buscarPorTipoAndEtapa(@RequestParam(required = true) String nome);
+
     @PutMapping("/{id}")
     @Operation(summary = "Atualizar pedido", description = """
            Atualizar pedido
