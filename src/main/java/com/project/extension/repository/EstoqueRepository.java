@@ -14,16 +14,21 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 
     Optional<Estoque> findByProduto(Produto produto);
 
-    @Query("""
+    @Query(
+        value = """
         SELECT COUNT(*)
         FROM estoque e
         JOIN produto p ON p.id = e.produto_id
         JOIN metrica_estoque m ON m.id = p.metrica_estoque_id
         WHERE e.quantidade_disponivel < m.nivel_minimo
-    """)
+        """,
+        nativeQuery = true
+    )
     int countItensAbaixoMinimo();
 
-    @Query("""
+    @Query(
+
+        value = """
         SELECT
         e.quantidade_total,
         e.quantidade_disponivel,
@@ -39,6 +44,8 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
         JOIN produto p ON p.id = e.produto_id
         JOIN metrica_estoque m ON m.id = p.metrica_estoque_id
         WHERE e.quantidade_disponivel < m.nivel_minimo
-    """)
+    """,
+       nativeQuery = true
+    )
     List<EstoqueCriticoResponseDto> estoqueCritco();
 }
