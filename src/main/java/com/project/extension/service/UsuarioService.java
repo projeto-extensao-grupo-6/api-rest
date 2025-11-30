@@ -83,7 +83,6 @@ public class UsuarioService {
         destino.setCpf(origem.getCpf());
         destino.setEmail(origem.getEmail());
         destino.setTelefone(origem.getTelefone());
-        destino.setSenha(origem.getSenha());
 
         if (origem.getSenha() != null && !origem.getSenha().isEmpty()) {
             destino.setSenha(origem.getSenha());

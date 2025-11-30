@@ -30,23 +30,17 @@
             Agendamento agendamento = new Agendamento(
                     dto.tipoAgendamento(),
                     dto.dataAgendamento(),
+                    dto.inicioAgendamento(),
+                    dto.fimAgendamento(),
                     dto.observacao()
             );
 
             agendamento.setEndereco(enderecoMapper.toEntity(dto.endereco()));
 
             agendamento.setStatusAgendamento(statusMapper.toEntity(dto.statusAgendamento()));
-
             agendamento.setPedido(pedidoMapper.toEntity(dto.pedido()));
 
-            List<Funcionario> funcionarios = funcionarioMapper.toEntity(dto.funcionarios());
-            agendamento.setFuncionarios(funcionarios);
 
-            List<AgendamentoProduto> agendamentoProdutos = dto.produtos().stream()
-                    .map(agendamentoProdutoMapper::toEntity)
-                    .collect(Collectors.toList());
-
-            agendamento.setAgendamentoProdutos(agendamentoProdutos);
 
             return agendamento;
         }
@@ -58,8 +52,10 @@
                     agendamento.getId(),
                     agendamento.getTipoAgendamento(),
                     agendamento.getDataAgendamento(),
-                    statusMapper.toResponse(agendamento.getStatusAgendamento()),
+                    agendamento.getInicioAgendamento(),
+                    agendamento.getFimAgendamento(),
                     agendamento.getObservacao(),
+                    statusMapper.toResponse(agendamento.getStatusAgendamento()),
                     pedidoMapper.toResponse(agendamento.getPedido()),
                     enderecoMapper.toResponse(agendamento.getEndereco()),
                     funcionarioMapper.toResponse(agendamento.getFuncionarios()),
