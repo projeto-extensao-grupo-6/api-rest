@@ -35,6 +35,10 @@ public class DashboardService {
         return agendamentoRepository.countQtdAgendamentosFuturos();
     }
 
+    public Double taxaOcupacaoServicos(){
+        return agendamentoRepository.taxaOcupacaoServicos();
+    }
+
     public List<ProximosAgendamentosResponseDto> proximosAgendamentos() {
         List<ProximosAgendamentosResponseDto> agendamentos = agendamentoRepository.proximosAgendamentos();
         return agendamentos;

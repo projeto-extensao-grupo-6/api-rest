@@ -72,4 +72,7 @@ public interface DashboardControllerDoc {
 
     @GetMapping("/agendamentos-futuros")
     ResponseEntity<List<ProximosAgendamentosResponseDto>> proximosAgendamentos();
+
+    @GetMapping("/taxa-ocupacao-servicos")
+    ResponseEntity<TaxaOcupacaoServicosResponseDto> taxaOcupacaoServicos();
 }

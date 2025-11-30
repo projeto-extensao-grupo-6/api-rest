@@ -11,9 +11,14 @@ import java.util.List;
 @Component
 public class DashboardMapper {
 
+    public TaxaOcupacaoServicosResponseDto toTaxaOcupacaoServicosResponseDto(Double taxaOcupacaoServicos){
+        return new TaxaOcupacaoServicosResponseDto(taxaOcupacaoServicos);
+    }
+
     public ItensAbaixoMinimoKpiResponseDto toItensAbaixoMinimoDto(int quantidade) {
         return new ItensAbaixoMinimoKpiResponseDto(quantidade);
     }
+
     public EstoqueCriticoResponseDto toResponse(EstoqueCriticoResponseDto dto) {
         return new EstoqueCriticoResponseDto(
                 dto.quantidadeTotal(),

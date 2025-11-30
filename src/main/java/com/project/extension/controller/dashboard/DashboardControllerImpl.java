@@ -47,4 +47,10 @@ public class DashboardControllerImpl implements DashboardControllerDoc {
         var dto = dashboardService.proximosAgendamentos();
         return ResponseEntity.ok(mapper.toProximosAgendamentosResponseDto(dto));
     }
+
+    @Override
+    public ResponseEntity<TaxaOcupacaoServicosResponseDto> taxaOcupacaoServicos() {
+        var dto = dashboardService.taxaOcupacaoServicos();
+        return ResponseEntity.ok(mapper.toTaxaOcupacaoServicosResponseDto(dto));
+    }
 }
