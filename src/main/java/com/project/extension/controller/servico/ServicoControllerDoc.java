@@ -18,9 +18,9 @@ public interface ServicoControllerDoc {
 
     @PostMapping
     @Operation(summary = "Cadastrar um novo serviço", description = """
-            Cadastrar uma nova serviços
+            Cadastrar um novo serviço
             ---
-            Cadastrar uma nova serviços no banco de dados
+            Cadastrar um novo serviço no banco de dados
             """)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Serviço criado com sucesso",
