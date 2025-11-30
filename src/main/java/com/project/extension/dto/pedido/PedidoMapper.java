@@ -1,7 +1,6 @@
 package com.project.extension.dto.pedido;
 
 import com.project.extension.dto.cliente.ClienteMapper;
-import com.project.extension.dto.etapa.EtapaMapper;
 import com.project.extension.dto.status.StatusMapper;
 import com.project.extension.entity.Pedido;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class PedidoMapper {
 
     private final StatusMapper statusMapper;
-    private final EtapaMapper etapaMapper;
     private final ClienteMapper clienteMapper;
 
     public Pedido toEntity(PedidoRequestDto dto) {
@@ -21,11 +19,12 @@ public class PedidoMapper {
         Pedido pedido =  new Pedido(
                 dto.valorTotal(),
                 dto.ativo(),
-                dto.observacao()
+                dto.observacao(),
+                dto.formaPagamento(),
+                dto.tipoPedido()
         );
 
         pedido.setStatus(statusMapper.toEntity(dto.status()));
-        pedido.setEtapa(etapaMapper.toEntity(dto.etapa()));
         pedido.setCliente(clienteMapper.toEntity(dto.cliente()));
         return pedido;
     }
@@ -36,17 +35,15 @@ public class PedidoMapper {
         Pedido pedido = new Pedido(
                 dto.valorTotal(),
                 dto.ativo(),
-                dto.observacao()
+                dto.observacao(),
+                dto.formaPagamento(),
+                dto.tipoPedido()
         );
 
         pedido.setId(dto.id());
 
         if (dto.status() != null) {
             pedido.setStatus(statusMapper.toEntity(dto.status()));
-        }
-
-        if (dto.etapa() != null) {
-            pedido.setEtapa(etapaMapper.toEntity(dto.etapa()));
         }
 
         if (dto.cliente() != null){
@@ -64,9 +61,10 @@ public class PedidoMapper {
                 pedido.getValorTotal(),
                 pedido.getAtivo(),
                 pedido.getObservacao(),
-                statusMapper.toResponse(pedido.getStatus()),
-                etapaMapper.toResponse(pedido.getEtapa()),
-                clienteMapper.toResponse(pedido.getCliente())
+                pedido.getFormaPagamento(),
+                pedido.getTipoPedido(),
+                clienteMapper.toResponse(pedido.getCliente()),
+                statusMapper.toResponse(pedido.getStatus())
         );
     }
 }

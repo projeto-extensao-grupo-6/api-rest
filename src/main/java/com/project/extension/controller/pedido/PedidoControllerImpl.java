@@ -23,13 +23,7 @@ import java.util.stream.Collectors;
 public class PedidoControllerImpl implements PedidoControllerDoc{
     private final PedidoService service;
     private final PedidoMapper mapper;
-    private final PedidoProdutoMapper produtoMapper;
 
-    @Override
-    public ResponseEntity<PedidoProdutoResponseDto> criarPedidoProduto(PedidoProdutoRequestDto request) {
-        PedidoProdutoResponseDto response = service.criarPedidoProduto(request);
-        return ResponseEntity.status(201).body(response);
-    }
 
     @Override
     public ResponseEntity<PedidoResponseDto> salvar(PedidoRequestDto request) {
@@ -73,7 +67,7 @@ public class PedidoControllerImpl implements PedidoControllerDoc{
     @Override
     public ResponseEntity<PedidoResponseDto> atualizar(PedidoRequestDto request, Integer id) {
         Pedido pedidoAtualizar = mapper.toEntity(request);
-        Pedido pedidoAtualizado = service.editar(pedidoAtualizar, id);
+        Pedido pedidoAtualizado = service.editar(id, pedidoAtualizar);
         return ResponseEntity.status(200).body(mapper.toResponse(pedidoAtualizado));
     }
 
