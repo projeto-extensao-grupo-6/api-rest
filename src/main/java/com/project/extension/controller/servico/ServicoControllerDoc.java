@@ -85,7 +85,8 @@ public interface ServicoControllerDoc {
              Deleta um serviço no banco de dados com base no id fornecido.
             """)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Serviço deletado com sucesso"),
+            @ApiResponse(responseCode = "200", description = "Serviço deletado com sucesso",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "404", description = "Serviço não encontrado")
     })
     ResponseEntity<String> deletar(@PathVariable Integer id);
