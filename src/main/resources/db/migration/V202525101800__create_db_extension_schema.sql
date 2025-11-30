@@ -165,14 +165,13 @@ CREATE TABLE etapa (
 CREATE TABLE pedido (
     id INT PRIMARY KEY AUTO_INCREMENT,
     cliente_id INT,
-    etapa_id INT,
     status_id INT,
     valor_total DECIMAL(18,2),
     ativo BOOLEAN DEFAULT TRUE COMMENT 'Indica se o pedido está ativo',
     observacao TEXT,
+    forma_pagamento VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Data de criação do registro',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Data de atualização',
-    FOREIGN KEY (etapa_id) REFERENCES etapa(id),
     FOREIGN KEY (status_id) REFERENCES status(id),
     FOREIGN KEY (cliente_id) REFERENCES cliente(id)
 );
