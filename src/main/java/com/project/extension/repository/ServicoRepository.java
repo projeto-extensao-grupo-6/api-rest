@@ -10,6 +10,6 @@ import java.util.List;
 public interface ServicoRepository extends JpaRepository<Servico, Integer> {
     List<Servico> findAllByEtapa(Etapa etapa);
 
-    Servico findFirstByOrderByIdDesc();
-
+    @Query(value = "SELECT * FROM servico ORDER BY id DESC LIMIT 1", nativeQuery = true)
+    Servico findUltimoServico();
 }
