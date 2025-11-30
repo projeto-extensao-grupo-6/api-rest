@@ -101,22 +101,4 @@ public interface PedidoControllerDoc {
                     content = @Content())
     })
     ResponseEntity<String> deletar(@PathVariable Integer id);
-
-    // NOVO MÉTODO: Criação de Pedido de Produto
-    @PostMapping("/produtos")
-    @Operation(summary = "Criar novo pedido de produto (com baixa de estoque)", description = """
-            Cria um pedido e, de forma transacional, valida a disponibilidade e dá baixa no estoque.
-            ---
-            Se o estoque for insuficiente para qualquer item, a transação é revertida (rollback).
-            """)
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Quando o pedido de produto é criado com sucesso",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = PedidoProdutoResponseDto.class)
-                    )),
-            @ApiResponse(responseCode = "400", description = "Quando o estoque for insuficiente ou a requisição for inválida",
-                    content = @Content())
-    })
-    ResponseEntity<PedidoProdutoResponseDto> criarPedidoProduto(@RequestBody PedidoProdutoRequestDto request);
 }
