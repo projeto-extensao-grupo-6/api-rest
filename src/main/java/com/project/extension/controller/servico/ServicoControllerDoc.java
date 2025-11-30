@@ -33,9 +33,9 @@ public interface ServicoControllerDoc {
     @Operation(
             summary = "Listar serviços",
             description = """
-            Lista todas as serviços cadastradas, com opção de filtrar por etapa via parâmetro.
+            Lista todos os serviços cadastrados, com opção de filtrar por etapa via parâmetro.
             ---
-            Exemplo: /servicoes?etapa=PENDENTE
+            Exemplo: /servicos?etapa=PENDENTE
             """)
     @ApiResponses(value = {
             @ApiResponse(
