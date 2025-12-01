@@ -1,7 +1,5 @@
 package com.project.extension.controller.pedido;
 
-import com.project.extension.dto.itemproduto.PedidoProdutoRequestDto;
-import com.project.extension.dto.itemproduto.PedidoProdutoResponseDto;
 import com.project.extension.dto.pedido.PedidoRequestDto;
 import com.project.extension.dto.pedido.PedidoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -73,7 +71,7 @@ public interface PedidoControllerDoc {
 
     @GetMapping("findAllBy")
     @Operation(
-            summary = "Buscar pedidos por etapa",
+            summary = "Buscar pedidos de serviço por etapa",
             description = """
             Retorna todos os pedidos filtrados pelo nome da etapa.
             """
