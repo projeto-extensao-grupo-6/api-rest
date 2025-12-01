@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Table(name = "item_pedido")
 public class ItemPedido {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,17 +29,24 @@ public class ItemPedido {
     private Estoque estoque;
 
     @NotNull
-    @Column(name= "quantidade_solicitada", precision = 18, scale = 2)
+    @Column(name = "quantidade_solicitada", precision = 18, scale = 5)
     private BigDecimal quantidadeSolicitada;
 
     @NotNull
-    @Column(name = "preco_unitario_negociado", precision = 18, scale = 2)
+    @Column(name = "preco_unitario_negociado", precision = 18, scale = 5)
     private BigDecimal precoUnitarioNegociado;
 
-    @Column(name = "subtotal", precision = 18, scale = 2, insertable = false, updatable = false)
+    @Column(name = "subtotal", precision = 18, scale = 2,
+            insertable = false, updatable = false)
     private BigDecimal subtotal;
 
     private String observacao;
+
+    @Column(name = "created_at", updatable = false, insertable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", insertable = false)
+    private LocalDateTime updatedAt;
 
     public ItemPedido(BigDecimal quantidadeSolicitada, BigDecimal precoUnitarioNegociado, BigDecimal subtotal, String observacao) {
         this.quantidadeSolicitada = quantidadeSolicitada;
