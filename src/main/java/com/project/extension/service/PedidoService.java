@@ -1,5 +1,6 @@
 package com.project.extension.service;
 
+import com.project.extension.entity.Etapa;
 import com.project.extension.entity.Pedido;
 import com.project.extension.exception.naoencontrado.PedidoNaoEncontradoException;
 import com.project.extension.repository.PedidoRepository;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -18,6 +18,7 @@ import java.util.Optional;
 public class PedidoService {
 
     private final PedidoRepository repository;
+    private final EtapaService etapaService;
     private final PedidoContext pedidoContext;
     private final LogService logService;
 
@@ -53,29 +54,9 @@ public class PedidoService {
 
     public List<Pedido> listarPedidosPorTipoENomeDaEtapa(String nome) {
         Etapa etapa = etapaService.buscarPorTipoAndEtapa("PEDIDO", nome);
-        List<Pedido> pedidos = repository.findAllByEtapa(etapa);
+        List<Pedido> pedidos = repository.findAllByServico_Etapa(etapa);
         log.info("Total de pedidos encontrados: " + pedidos.size() + " para etapa: " + etapa.getNome());
         return pedidos;
-    }
-
-    private void atualizarCampos(Pedido destino, Pedido origem) {
-       destino.setValorTotal(origem.getValorTotal());
-       destino.setAtivo(origem.getAtivo());
-       destino.setObservacao(origem.getObservacao());
-
-        if (origem.getStatus() != null) {
-            Status statusAtualizado = statusService.buscarPorTipoAndStatus(origem.getStatus().getTipo(),
-                    origem.getStatus().getNome());
-            destino.setStatus(statusAtualizado);
-        }
-
-        if (origem.getEtapa() != null) {
-            Etapa etapaAtualizada = etapaService.buscarPorTipoAndEtapa(
-                    origem.getEtapa().getTipo(),
-                    origem.getEtapa().getNome()
-            );
-            destino.setEtapa(etapaAtualizada);
-        }
     }
   
     @Transactional
