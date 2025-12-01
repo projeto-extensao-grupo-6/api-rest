@@ -88,4 +88,8 @@ public class PedidoService {
                 id
         ));
     }
+
+    public List<Pedido> listarPedidosPorTipo(String tipo) {
+        return repository.findByTipoPedidoIgnoreCase(tipo);
+    }
 }
