@@ -42,23 +42,26 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Intege
 
     @Query("""
         SELECT new com.project.extension.dto.dashboard.ProximosAgendamentosResponseDto(
-               a.id AS idAgendamento,
-               a.dataAgendamento AS dataAgendamento,
-               a.inicioAgendamento AS inicioAgendamento,
-               a.fimAgendamento AS fimAgendamento,
-               a.observacao AS agendamentoObservacao,
-               p.valorTotal AS valorTotal,
-               p.observacao AS pedidoObservacao,
-               p.ativo AS ativo,
-               s.nome AS status
+               a.id,
+               a.dataAgendamento,
+               a.inicioAgendamento,
+               a.fimAgendamento,
+               a.observacao,
+               CAST(s.precoBase AS java.math.BigDecimal),
+               s.pedido.observacao,
+               s.ativo,
+               st.nome
         )
         FROM Agendamento a
-        JOIN a.pedido p
-        JOIN a.statusAgendamento s
+        JOIN a.servico s
+        LEFT JOIN s.pedido p
+        JOIN a.statusAgendamento st
         WHERE a.dataAgendamento = CURRENT_DATE
         ORDER BY a.inicioAgendamento ASC
     """)
     List<ProximosAgendamentosResponseDto> proximosAgendamentos();
+
+
 
     @Query(value = """
         SELECT
