@@ -281,3 +281,7 @@ MODIFY COLUMN quantidade_atual DECIMAL(18, 2);
 ALTER TABLE agendamento_produto
 MODIFY COLUMN quantidade_utilizada DECIMAL(18, 2) NOT NULL CHECK (quantidade_utilizada >= 0),
 MODIFY COLUMN quantidade_reservada DECIMAL(18, 2) NOT NULL CHECK (quantidade_reservada >= 0);
+
+ALTER TABLE agendamento ADD COLUMN inicio_agendamento TIMESTAMP NOT NULL;
+ALTER TABLE agendamento ADD COLUMN fim_agendamento TIMESTAMP NOT NULL;
+ALTER TABLE agendamento MODIFY COLUMN data_agendamento DATE NOT NULL;
