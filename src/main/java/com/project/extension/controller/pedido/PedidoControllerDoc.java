@@ -118,4 +118,45 @@ public interface PedidoControllerDoc {
                     content = @Content())
     })
     ResponseEntity<String> deletar(@PathVariable Integer id);
+
+    @GetMapping("/servicos")
+    @Operation(
+            summary = "Listar pedidos de serviço",
+            description = """
+        Retorna todos os pedidos cujo tipo é 'serviço'.
+        ---
+        Esse endpoint lista apenas pedidos associados a um serviço.
+        """
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pedidos de serviço encontrados",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PedidoResponseDto.class)
+                    )),
+            @ApiResponse(responseCode = "204", description = "Nenhum pedido de serviço encontrado",
+                    content = @Content())
+    })
+    ResponseEntity<List<PedidoResponseDto>> buscarPedidosDeServico();
+
+
+    @GetMapping("/produtos")
+    @Operation(
+            summary = "Listar pedidos de produto",
+            description = """
+        Retorna todos os pedidos cujo tipo é 'produto'.
+        ---
+        Esse endpoint lista apenas pedidos associados a itens de produto.
+        """
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pedidos de produto encontrados",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PedidoResponseDto.class)
+                    )),
+            @ApiResponse(responseCode = "204", description = "Nenhum pedido de produto encontrado",
+                    content = @Content())
+    })
+    ResponseEntity<List<PedidoResponseDto>> buscarPedidosDeProduto();
 }

@@ -72,4 +72,34 @@ public class PedidoControllerImpl implements PedidoControllerDoc{
         service.deletar(id);
         return ResponseEntity.ok("Pedido e vínculos removidos com sucesso.");
     }
+
+    @Override
+    public ResponseEntity<List<PedidoResponseDto>> buscarPedidosDeServico() {
+        List<Pedido> pedidos = service.listarPedidosPorTipo("serviço");
+
+        if (pedidos.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<PedidoResponseDto> dtos = pedidos.stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return ResponseEntity.status(200).body(dtos);
+    }
+
+    @Override
+    public ResponseEntity<List<PedidoResponseDto>> buscarPedidosDeProduto() {
+        List<Pedido> pedidos = service.listarPedidosPorTipo("produto");
+
+        if (pedidos.isEmpty()) {
+            return ResponseEntity.status(204).build();
+        }
+
+        List<PedidoResponseDto> dtos = pedidos.stream()
+                .map(mapper::toResponse)
+                .toList();
+
+        return ResponseEntity.status(200).body(dtos);
+    }
 }
