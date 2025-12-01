@@ -45,13 +45,23 @@ public class PedidoService {
                     etapaSalvo.getTipo(), etapaSalvo.getNome()));
         }
 
-        Cliente clienteAssociado = clienteService.buscarPorId(
-                pedido.getCliente().getId()
-        );
 
-        if (clienteAssociado == null){
+        Cliente clienteAssociado = null;
+        if (pedido.getCliente() != null && pedido.getCliente().getId() != null) {
+            clienteAssociado = clienteService.buscarPorId(pedido.getCliente().getId());
+        }
+
+        if (clienteAssociado == null) {
             clienteAssociado = clienteService.cadastrar(pedido.getCliente());
-            log.info("ID Client: {} - Cliente associado: {}", clienteAssociado.getId(), clienteAssociado.getNome());
+            if (clienteAssociado != null) {
+                log.info("ID Client: {} - Cliente associado: {}", clienteAssociado.getId(), clienteAssociado.getNome());
+                pedido.setCliente(clienteAssociado);
+            } else {
+                logService.error("Falha ao associar cliente automaticamente.");
+            }
+        } else {
+            // se encontrou, garante que o pedido use o cliente recuperado
+            pedido.setCliente(clienteAssociado);
         }
 
         pedido.setEtapa(etapaSalvo);
