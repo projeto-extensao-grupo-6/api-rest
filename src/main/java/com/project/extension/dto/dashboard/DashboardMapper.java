@@ -57,12 +57,6 @@ public class DashboardMapper {
                 dto.valorTotal(),
                 dto.pedidoObservacao(),
                 dto.ativo(),
-                dto.numero(),
-                dto.complemento(),
-                dto.bairro(),
-                dto.cidade(),
-                dto.uf(),
-                dto.cep(),
                 dto.status()
         );
     }
@@ -73,5 +67,4 @@ public class DashboardMapper {
                 .map(this::toResponseProximosAgendamentos)
                 .toList();
     }
-
 }

@@ -54,9 +54,32 @@ public interface DashboardControllerDoc {
     ResponseEntity<QtdAgendamentosHojeResponseDto> getQtdAgendamentosHoje();
 
     @GetMapping("/taxa-ocupacao-servicos")
+    @Operation(summary = "Buscar a taxa de ocupacao de servics no dia", description = """
+               Busca um porcentagem da taxa de ocupacao no dia, baseado na equacao
+               ocupacao = ((total_funcionarios * 9) / horas_trabalhadas_dia) / 100
+           """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = """
+                    Puxa qualquer valor do banco, se a tabela estiver sem registros futuros ou vazia retorna 0""",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProdutoResponseDto.class)
+                    )),
+    })
     ResponseEntity<TaxaOcupacaoServicosResponseDto> taxaOcupacaoServicos();
 
     @GetMapping("/qtd-servicos-hoje")
+    @Operation(summary = "Buscar quantidade de servicos hoje", description = """
+               Busca a quantidade de servicos no dia de hoje
+           """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = """
+                    Puxa qualquer valor do banco, se a tabela estiver sem registros ou vazia retorna 0""",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProdutoResponseDto.class)
+                    )),
+    })
     ResponseEntity<QtdServicosHojeResponseDto> qtdServicosHoje();
 
     @GetMapping("/qtd-agendamentos-futuros")
@@ -74,9 +97,32 @@ public interface DashboardControllerDoc {
     ResponseEntity<QtdAgendamentosFuturosResponseDto> getQtdAgendamentosFuturos();
 
     @GetMapping("/estoque-critico")
+    @Operation(summary = "Buscar os itens em estoque critico", description = """
+               Busca itens no estoque que estão abaixo do nivel minimo permitido
+           """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = """
+                    Puxa qualquer valor do banco, se não tiver registros, retorna uma lista vazia""",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProdutoResponseDto.class)
+                    )),
+    })
     ResponseEntity<List<EstoqueCriticoResponseDto>> listarEstoqueCritico();
 
     @GetMapping("/agendamentos-futuros")
+    @Operation(summary = "Buscar os agendamentos futuros", description = """
+               Busca uma lista com os agendamentos futuros do dia
+           """)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = """
+                    Puxa qualquer valor do banco, se a tabela estiver sem registros futuros
+                    retorna 0 """,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProdutoResponseDto.class)
+                    )),
+    })
     ResponseEntity<List<ProximosAgendamentosResponseDto>> proximosAgendamentos();
 
 }

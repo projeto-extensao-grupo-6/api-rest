@@ -15,7 +15,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 public class DashboardService {
-    //TODO Mudar nomes dos metodos, retirar o get e colocar algo como "listar"
+
     private EstoqueRepository estoqueRepository;
     private AgendamentoRepository agendamentoRepository;
 
@@ -44,7 +44,6 @@ public class DashboardService {
     }
 
     public List<ProximosAgendamentosResponseDto> proximosAgendamentos() {
-        List<ProximosAgendamentosResponseDto> agendamentos = agendamentoRepository.proximosAgendamentos();
-        return agendamentos;
+        return agendamentoRepository.proximosAgendamentos();
     }
 }
