@@ -13,7 +13,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Intege
             value = """   
                 SELECT COUNT(*)
                 FROM agendamento a
-                WHERE DATE(a.data_agendamento) = CURRENT_DATE
+                WHERE DATE(a.data_agendamento) >= CURRENT_DATE
             """,
                  nativeQuery = true
           )
@@ -56,7 +56,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Intege
         JOIN a.pedido p
         JOIN a.statusAgendamento s
         WHERE a.dataAgendamento = CURRENT_DATE
-        ORDER BY a.dataAgendamento ASC
+        ORDER BY a.inicioAgendamento ASC
     """)
     List<ProximosAgendamentosResponseDto> proximosAgendamentos();
 
