@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/pedidos")
 @RequiredArgsConstructor
 public class PedidoControllerImpl implements PedidoControllerDoc{
-
     private final PedidoService service;
     private final PedidoMapper mapper;
 
@@ -64,7 +63,7 @@ public class PedidoControllerImpl implements PedidoControllerDoc{
     @Override
     public ResponseEntity<PedidoResponseDto> atualizar(PedidoRequestDto request, Integer id) {
         Pedido pedidoAtualizar = mapper.toEntity(request);
-        Pedido pedidoAtualizado = service.editar(pedidoAtualizar, id);
+        Pedido pedidoAtualizado = service.editar(id, pedidoAtualizar);
         return ResponseEntity.status(200).body(mapper.toResponse(pedidoAtualizado));
     }
 

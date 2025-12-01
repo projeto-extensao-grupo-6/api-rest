@@ -71,7 +71,7 @@ public interface PedidoControllerDoc {
 
     @GetMapping("findAllBy")
     @Operation(
-            summary = "Buscar pedidos por etapa",
+            summary = "Buscar pedidos de serviço por etapa",
             description = """
             Retorna todos os pedidos filtrados pelo nome da etapa.
             """
