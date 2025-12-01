@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/pedidos")
 @RequiredArgsConstructor
 public class PedidoControllerImpl implements PedidoControllerDoc{
-
     private final PedidoService service;
     private final PedidoMapper mapper;
 
@@ -46,9 +46,24 @@ public class PedidoControllerImpl implements PedidoControllerDoc{
     }
 
     @Override
+    public ResponseEntity<List<PedidoResponseDto>> buscarPorTipoAndEtapa(String nome){
+        List<Pedido> pedidos = service.listarPedidosPorTipoENomeDaEtapa(nome);
+
+        if(pedidos.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        List<PedidoResponseDto> dtos = pedidos.stream()
+                .map(mapper::toResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(200).body(dtos);
+    }
+
+    @Override
     public ResponseEntity<PedidoResponseDto> atualizar(PedidoRequestDto request, Integer id) {
         Pedido pedidoAtualizar = mapper.toEntity(request);
-        Pedido pedidoAtualizado = service.editar(pedidoAtualizar, id);
+        Pedido pedidoAtualizado = service.editar(id, pedidoAtualizar);
         return ResponseEntity.status(200).body(mapper.toResponse(pedidoAtualizado));
     }
 
