@@ -1,4 +1,4 @@
-package com.project.extension.dto.servico;
+package com.project.extension.dto.pedido.servico;
 
 import com.project.extension.dto.etapa.EtapaResponseDto;
 

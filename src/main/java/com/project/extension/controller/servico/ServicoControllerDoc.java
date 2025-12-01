@@ -1,7 +1,7 @@
 package com.project.extension.controller.servico;
 
-import com.project.extension.dto.servico.ServicoRequestDto;
-import com.project.extension.dto.servico.ServicoResponseDto;
+import com.project.extension.dto.pedido.servico.ServicoRequestDto;
+import com.project.extension.dto.pedido.servico.ServicoResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

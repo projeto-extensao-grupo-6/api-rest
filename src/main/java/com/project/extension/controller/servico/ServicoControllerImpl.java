@@ -1,8 +1,8 @@
 package com.project.extension.controller.servico;
 
-import com.project.extension.dto.servico.ServicoMapper;
-import com.project.extension.dto.servico.ServicoRequestDto;
-import com.project.extension.dto.servico.ServicoResponseDto;
+import com.project.extension.dto.pedido.servico.ServicoMapper;
+import com.project.extension.dto.pedido.servico.ServicoRequestDto;
+import com.project.extension.dto.pedido.servico.ServicoResponseDto;
 import com.project.extension.entity.Servico;
 import com.project.extension.service.ServicoService;
 import lombok.RequiredArgsConstructor;
