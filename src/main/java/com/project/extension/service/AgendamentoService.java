@@ -21,13 +21,13 @@ public class AgendamentoService {
     private final FuncionarioService funcionarioService;
     private final StatusService statusService;
     private final AgendamentoContext agendamentoContext;
-    private final PedidoService pedidoService;
+    private final ServicoService servicoService;
     private final LogService logService;
 
     public Agendamento salvar(Agendamento agendamento) {
-        if (agendamento.getPedido() != null && agendamento.getPedido().getId() != null) {
-            Pedido pedidoCompleto = pedidoService.buscarPorId(agendamento.getPedido().getId());
-            agendamento.setPedido(pedidoCompleto);
+        if (agendamento.getServico() != null && agendamento.getServico().getId() != null) {
+            Servico servico = servicoService.buscarPorId(agendamento.getServico().getId());
+            agendamento.setServico(servico);
         }
 
         Agendamento agendamentoProcessado = agendamentoContext.processarAgendamento(agendamento);
@@ -63,7 +63,7 @@ public class AgendamentoService {
 
     public void deletar(Integer id) {
         Agendamento agendamento = buscarPorId(id);
-        agendamento.setPedido(null);
+        agendamento.setServico(null);
         repository.delete(agendamento);
 
         logService.warning(String.format("Tentativa de exclusão lógica/desvinculação do Agendamento ID %d.", id));
