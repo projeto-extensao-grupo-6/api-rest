@@ -61,24 +61,26 @@ public class EstoqueService {
         }
 
         if (tipo == TipoMovimentacao.SAIDA) {
+
             if (quantidadeMovimento.compareTo(disponivelAtual) > 0) {
-                String erroMensagem = String.format("Estoque insuficiente para Produto '%s'. Disponível: %f, solicitado: %f.",
-                        produto.getNome(), disponivelAtual, quantidadeMovimento);
-                logService.warning(erroMensagem);
-                throw new EstoqueNaoPodeSerNegativoException(erroMensagem);
+                throw new EstoqueNaoPodeSerNegativoException(
+                        String.format("Estoque insuficiente para Produto '%s'. Disponível: %f, solicitado: %f.",
+                                produto.getNome(), disponivelAtual, quantidadeMovimento));
             }
 
             BigDecimal novoTotal = totalAtual.subtract(quantidadeMovimento);
             estoqueExistente.setQuantidadeTotal(novoTotal);
-            BigDecimal novoDisponivel = totalAtual.subtract(estoqueExistente.getReservado());
-            estoqueExistente.setQuantidadeDisponivel(novoDisponivel);
 
+            BigDecimal novoDisponivel = novoTotal.subtract(estoqueExistente.getReservado());
+            estoqueExistente.setQuantidadeDisponivel(novoDisponivel);
         } else {
             BigDecimal novoTotal = totalAtual.add(quantidadeMovimento);
             estoqueExistente.setQuantidadeTotal(novoTotal);
-            BigDecimal novoDisponivel = (totalAtual.add(quantidadeMovimento)).subtract(estoqueExistente.getReservado());
+
+            BigDecimal novoDisponivel = novoTotal.subtract(estoqueExistente.getReservado());
             estoqueExistente.setQuantidadeDisponivel(novoDisponivel);
         }
+
 
         Estoque salvo = repository.save(estoqueExistente);
 
