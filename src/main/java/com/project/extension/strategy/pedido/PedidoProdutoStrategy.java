@@ -26,6 +26,10 @@ public class PedidoProdutoStrategy implements PedidoStrategy {
         BigDecimal total = BigDecimal.ZERO;
         List<ItemPedido> itensProcessados = new ArrayList<>();
 
+        if (pedido.getCliente().getId() == 0 ) {
+            Cliente cliente = clienteService.cadastrar(pedido.getCliente());
+            pedido.setCliente(cliente);
+        }
         if (pedido.getCliente() != null) {
             Cliente cliente = clienteService.buscarPorId(pedido.getCliente().getId());
             pedido.setCliente(cliente);
