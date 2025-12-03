@@ -265,8 +265,6 @@ INSERT INTO etapa (tipo, nome) VALUES
 ('PEDIDO', 'SERVIÇO EM EXECUÇÃO'),
 ('PEDIDO', 'CONCLUÍDO');
 
----------------------------------------------------------
-
 INSERT INTO status (tipo, nome) VALUES
 ('AGENDAMENTO', 'PENDENTE'),
 ('AGENDAMENTO', 'EM ANDAMENTO'),

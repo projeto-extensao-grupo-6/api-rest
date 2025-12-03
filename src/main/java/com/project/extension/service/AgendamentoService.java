@@ -64,13 +64,9 @@ public class AgendamentoService {
     public void deletar(Integer id) {
         Agendamento agendamento = buscarPorId(id);
         agendamento.setServico(null);
-        repository.delete(agendamento);
-
-        logService.warning(String.format("Tentativa de exclusão lógica/desvinculação do Agendamento ID %d.", id));
-
         agendamento.getFuncionarios().clear();
-        repository.save(agendamento);
-
+        agendamento.getAgendamentoProdutos().clear();
+        repository.delete(agendamento);
         logService.info(String.format("Agendamento ID %d desvinculado de funcionários (exclusão lógica).", id));
         log.info("Agendamento ID {} desvinculado de funcionários e mantido no histórico.", id);
     }

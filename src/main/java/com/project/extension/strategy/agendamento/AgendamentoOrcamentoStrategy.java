@@ -41,7 +41,7 @@ public class AgendamentoOrcamentoStrategy implements AgendamentoStrategy {
                 etapa = etapaService.cadastrar(new Etapa("PEDIDO", "AGUARDANDO ORÇAMENTO"));
             }
 
-            //servicoSalvo.setEtapa(etapa);
+            servicoSalvo.setEtapa(etapa);
             servicoService.editar(servicoSalvo, servicoSalvo.getId());
 
             agendamento.setServico(servicoSalvo);
