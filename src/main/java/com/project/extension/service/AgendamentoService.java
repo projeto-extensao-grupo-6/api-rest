@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,9 +21,15 @@ public class AgendamentoService {
     private final FuncionarioService funcionarioService;
     private final StatusService statusService;
     private final AgendamentoContext agendamentoContext;
+    private final ServicoService servicoService;
     private final LogService logService;
 
     public Agendamento salvar(Agendamento agendamento) {
+        if (agendamento.getServico() != null && agendamento.getServico().getId() != null) {
+            Servico servico = servicoService.buscarPorId(agendamento.getServico().getId());
+            agendamento.setServico(servico);
+        }
+
         Agendamento agendamentoProcessado = agendamentoContext.processarAgendamento(agendamento);
         Agendamento agendamentoSalvo = repository.save(agendamentoProcessado);
         // Log de Auditoria: Registro de criação no BD
@@ -42,6 +47,7 @@ public class AgendamentoService {
 
         atualizarDadosBasicos(destino, origem);
         atualizarEndereco(destino, origem);
+        atualizarHorario(destino, origem);
         atualizarStatus(destino, origem);
         atualizarFuncionarios(destino, origem);
 
@@ -57,6 +63,8 @@ public class AgendamentoService {
 
     public void deletar(Integer id) {
         Agendamento agendamento = buscarPorId(id);
+        agendamento.setServico(null);
+        repository.delete(agendamento);
 
         logService.warning(String.format("Tentativa de exclusão lógica/desvinculação do Agendamento ID %d.", id));
 
@@ -85,6 +93,8 @@ public class AgendamentoService {
 
     private void atualizarDadosBasicos(Agendamento destino, Agendamento origem) {
         destino.setTipoAgendamento(origem.getTipoAgendamento());
+        destino.setInicioAgendamento(origem.getInicioAgendamento());
+        destino.setFimAgendamento(origem.getFimAgendamento());
         destino.setDataAgendamento(origem.getDataAgendamento());
         destino.setObservacao(origem.getObservacao());
         log.trace("Dados básicos do agendamento atualizados.");
@@ -135,5 +145,12 @@ public class AgendamentoService {
             funcionarioSalvo = funcionarioService.cadastrar(f);
         }
         return funcionarioSalvo;
+    }
+
+    private void atualizarHorario(Agendamento destino, Agendamento origem) {
+        if(destino.getInicioAgendamento() != null && destino.getFimAgendamento() != null) {
+            destino.setInicioAgendamento(origem.getInicioAgendamento());
+            destino.setFimAgendamento(origem.getFimAgendamento());
+        }
     }
 }

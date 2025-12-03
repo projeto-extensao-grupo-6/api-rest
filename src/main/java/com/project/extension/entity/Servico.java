@@ -1,0 +1,48 @@
+package com.project.extension.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+public class Servico {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String nome;
+    private String codigo;
+    private String descricao;
+
+    @Column(name = "preco_base")
+    private Double precoBase;
+
+    private Boolean ativo;
+
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "etapa_id")
+    private Etapa etapa;
+
+    @OneToOne
+    @JoinColumn(name = "pedido_id")
+    private Pedido pedido;
+
+    @OneToOne(mappedBy = "servico", cascade = CascadeType.ALL)
+    private Agendamento agendamento;
+
+    public Servico(String nome, String descricao, Double precoBase, Boolean ativo) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.precoBase = precoBase;
+        this.ativo = ativo;
+    }
+}
