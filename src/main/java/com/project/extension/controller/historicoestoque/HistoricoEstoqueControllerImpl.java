@@ -31,8 +31,7 @@ public class HistoricoEstoqueControllerImpl implements HistoricoEstoqueControlle
 
     @Override
     public ResponseEntity<List<HistoricoEstoqueResponseDto>> buscarPorId(Integer id) {
-        List<HistoricoEstoque> historicoEstoques = service.buscarPorEstoqueId(id);
-
+       List<HistoricoEstoque> historicoEstoques = service.buscarPorEstoqueId(id);
         return historicoEstoques.isEmpty()
                 ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(historicoEstoques.stream()
