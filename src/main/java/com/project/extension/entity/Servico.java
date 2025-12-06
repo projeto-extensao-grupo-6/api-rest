@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,11 +35,11 @@ public class Servico {
     private Etapa etapa;
 
     @OneToOne
-    @JoinColumn(name = "pedido_id")
+    @JoinColumn(name = "pedido_id", unique = true)
     private Pedido pedido;
 
-    @OneToOne(mappedBy = "servico", cascade = CascadeType.ALL)
-    private Agendamento agendamento;
+    @OneToMany(mappedBy = "servico", cascade = CascadeType.ALL)
+    private List<Agendamento> agendamentos = new ArrayList<>();
 
     public Servico(String nome, String descricao, Double precoBase, Boolean ativo) {
         this.nome = nome;
