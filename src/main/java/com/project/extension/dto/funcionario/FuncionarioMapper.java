@@ -33,4 +33,21 @@ public class FuncionarioMapper {
                 funcionario.getAtivo()
         );
     }
+
+    public Funcionario toEntity(FuncionarioResponseDto dto) {
+        if (dto == null) return null;
+
+        Funcionario funcionario = new Funcionario();
+
+        funcionario.setId(dto.id());
+        funcionario.setNome(dto.nome());
+        funcionario.setTelefone(dto.telefone());
+        funcionario.setFuncao(dto.funcao());
+        funcionario.setContrato(dto.contrato());
+        funcionario.setEscala(dto.escala());
+        funcionario.setAtivo(dto.status());
+
+        return funcionario;
+    }
+
 }

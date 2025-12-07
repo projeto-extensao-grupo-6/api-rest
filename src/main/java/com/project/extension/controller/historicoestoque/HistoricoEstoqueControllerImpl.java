@@ -22,7 +22,6 @@ public class HistoricoEstoqueControllerImpl implements HistoricoEstoqueControlle
     @Override
     public ResponseEntity<List<HistoricoEstoqueResponseDto>> listar() {
         List<HistoricoEstoque> historicoEstoques = service.listar();
-
         return historicoEstoques.isEmpty()
                 ? ResponseEntity.status(204).build()
                 : ResponseEntity.status(200).body(historicoEstoques.stream()

@@ -3,8 +3,10 @@ package com.project.extension.dto.agendamento;
 import com.project.extension.dto.agendamentoproduto.AgendamentoProdutoRequestDto;
 import com.project.extension.dto.endereco.EnderecoRequestDto;
 import com.project.extension.dto.funcionario.FuncionarioRequestDto;
+import com.project.extension.dto.funcionario.FuncionarioResponseDto;
 import com.project.extension.dto.pedido.PedidoResponseDto;
 import com.project.extension.dto.pedido.servico.ServicoRequestDto;
+import com.project.extension.dto.pedido.servico.ServicoResponseDto;
 import com.project.extension.dto.status.StatusRequestDto;
 import com.project.extension.entity.TipoAgendamento;
 import jakarta.validation.Valid;
@@ -17,7 +19,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 public record AgendamentoRequestDto(
-        @Valid @NotNull ServicoRequestDto servico,
+        @Valid @NotNull ServicoResponseDto servico,
         @NotNull TipoAgendamento tipoAgendamento,
         @FutureOrPresent LocalDate dataAgendamento,
         @Valid @NotNull LocalTime inicioAgendamento,
@@ -25,7 +27,7 @@ public record AgendamentoRequestDto(
         @Valid @NotNull StatusRequestDto statusAgendamento,
         @NotBlank String observacao,
         @Valid @NotNull EnderecoRequestDto endereco,
-        @Valid @NotNull List<FuncionarioRequestDto> funcionarios,
+        @Valid @NotNull List<FuncionarioResponseDto> funcionarios,
         @Valid @NotNull List<AgendamentoProdutoRequestDto> produtos
 ) {
 }
