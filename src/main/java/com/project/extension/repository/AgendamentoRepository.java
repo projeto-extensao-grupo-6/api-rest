@@ -13,7 +13,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Intege
             value = """   
                 SELECT COUNT(*)
                 FROM agendamento a
-                WHERE DATE(a.data_agendamento) >= CURRENT_DATE
+                WHERE DATE(a.data_agendamento) = CURRENT_DATE
             """,
                  nativeQuery = true
           )

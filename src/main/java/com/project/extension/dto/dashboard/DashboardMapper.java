@@ -20,6 +20,7 @@ public class DashboardMapper {
 
     public EstoqueCriticoResponseDto toResponse(EstoqueCriticoResponseDto dto) {
         return new EstoqueCriticoResponseDto(
+                dto.id(),
                 dto.quantidadeTotal(),
                 dto.quantidadeDisponivel(),
                 dto.reservado(),

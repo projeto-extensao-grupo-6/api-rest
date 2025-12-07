@@ -52,12 +52,12 @@ public class AgendamentoService {
         atualizarFuncionarios(destino, origem);
 
         Agendamento atualizado = repository.save(destino);
-        // Log de Auditoria: Registro de atualização no BD
+
         String mensagem = String.format("Agendamento ID %d atualizado com sucesso. Novo Status: %s, Data: %s.",
                 atualizado.getId(),
                 atualizado.getStatusAgendamento() != null ? atualizado.getStatusAgendamento().getNome() : "N/A",
                 atualizado.getDataAgendamento());
-        logService.info(mensagem); // Usando INFO para indicar uma atualização
+        logService.info(mensagem);
         return atualizado;
     }
 
@@ -85,6 +85,31 @@ public class AgendamentoService {
         logService.info(String.format("Busca por todos os agendamentos realizada. Total de registros: %d.", lista.size()));
         return lista;
 
+    }
+
+    public Agendamento editarDadosBasicos(Agendamento origem, Integer id) {
+        Agendamento destino = buscarPorId(id);
+
+        destino.setInicioAgendamento(origem.getInicioAgendamento());
+        destino.setFimAgendamento(origem.getFimAgendamento());
+        destino.setDataAgendamento(origem.getDataAgendamento());
+        destino.setObservacao(origem.getObservacao());
+
+        if (origem.getStatusAgendamento() != null) {
+            Status statusAtualizado = statusService.buscarOuCriarPorTipoENome(
+                    origem.getStatusAgendamento().getTipo(),
+                    origem.getStatusAgendamento().getNome()
+            );
+            destino.setStatusAgendamento(statusAtualizado);
+
+            if (destino.getStatusAgendamento().getId() != statusAtualizado.getId()) {
+                logService.info(String.format("Status do Agendamento ID %d alterado para: %s.",
+                        destino.getId(),
+                        statusAtualizado.getNome()));
+            }
+        }
+
+        return repository.save(destino);
     }
 
     private void atualizarDadosBasicos(Agendamento destino, Agendamento origem) {
@@ -124,7 +149,7 @@ public class AgendamentoService {
         if (origem.getFuncionarios() != null) {
             List<Funcionario> funcionariosValidados = origem.getFuncionarios().stream()
                     .map(this::validarFuncionario)
-                    .collect(Collectors.toList());
+                    .toList();
 
             destino.getFuncionarios().clear();
             destino.getFuncionarios().addAll(funcionariosValidados);

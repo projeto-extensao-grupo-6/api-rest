@@ -1,5 +1,6 @@
 package com.project.extension.dto.pedido.servico.agendamento;
 
+import com.project.extension.dto.agendamento.AgendamentoRequestDto;
 import com.project.extension.dto.agendamentoproduto.AgendamentoProdutoMapper;
 import com.project.extension.dto.endereco.EnderecoMapper;
 import com.project.extension.dto.funcionario.FuncionarioMapper;
@@ -18,6 +19,22 @@ public class AgendamentoServicoMapper {
     private final FuncionarioMapper funcionarioMapper;
     private final StatusMapper statusMapper;
     private final AgendamentoProdutoMapper agendamentoProdutoMapper;
+
+    public Agendamento toEntity(AgendamentoServicoRequestDto dto) {
+        if (dto == null) return null;
+
+        Agendamento agendamento = new Agendamento(
+                dto.tipoAgendamento(),
+                dto.dataAgendamento(),
+                dto.inicioAgendamento(),
+                dto.fimAgendamento(),
+                dto.observacao()
+        );
+
+        agendamento.setStatusAgendamento(statusMapper.toEntity(dto.statusAgendamento()));
+
+        return agendamento;
+    }
 
     public AgendamentoServicoResponseDto toResponse(Agendamento agendamento) {
         if (agendamento == null) return null;

@@ -28,6 +28,7 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
     @Query(
             value = """
         SELECT
+        e.id,
         e.quantidade_total,
         e.quantidade_disponivel,
         e.reservado,

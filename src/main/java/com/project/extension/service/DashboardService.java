@@ -33,16 +33,17 @@ public class DashboardService {
 
         return raw.stream()
                 .map(r -> new EstoqueCriticoResponseDto(
-                        toBigDecimal(r[0]),
+                        (Integer) r[0] ,
                         toBigDecimal(r[1]),
                         toBigDecimal(r[2]),
-                        (String) r[3],
+                        toBigDecimal(r[3]),
                         (String) r[4],
                         (String) r[5],
                         (String) r[6],
-                        toBigDecimal(r[7]),
-                        (Integer) r[8],
-                        (Integer) r[9]
+                        (String) r[7],
+                        toBigDecimal(r[8]),
+                        (Integer) r[9],
+                        (Integer) r[10]
                 )).toList();
     }
 
