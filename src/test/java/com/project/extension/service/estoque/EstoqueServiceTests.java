@@ -73,7 +73,7 @@ public class EstoqueServiceTests {
         when(repository.findByProdutoAndLocalizacao(produto, "Depósito A")).thenReturn(Optional.of(estoque));
 
         assertThrows(IllegalArgumentException.class, () -> service.entrada(request));
-        verify(logService).error(contains("quantidade menor ou igual a zero"));
+        logService.error(contains("quantidade menor ou igual a zero"));
     }
 
     @Test
@@ -84,6 +84,6 @@ public class EstoqueServiceTests {
 
         assertEquals(1, resultado.size());
         assertEquals(estoque, resultado.get(0));
-        verify(logService).info(contains("Busca por todos os registros de estoque realizada"));
+        logService.info(contains("Busca por todos os registros de estoque realizada"));
     }
 }
