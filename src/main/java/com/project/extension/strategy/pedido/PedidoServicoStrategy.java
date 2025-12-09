@@ -25,13 +25,17 @@ public class PedidoServicoStrategy implements PedidoStrategy {
     @Override
     public Pedido criar(Pedido pedido) {
         if (pedido.getCliente().getId() == 0 ) {
-            Cliente cliente = clienteService.cadastrar(pedido.getCliente());
+            Cliente cliente = new Cliente();
+            cliente.setStatus("Ativo");
+            clienteService.cadastrar(pedido.getCliente());
             pedido.setCliente(cliente);
         }
 
         if (pedido.getCliente() != null) {
             Cliente cliente = clienteService.buscarPorId(pedido.getCliente().getId());
+            cliente.setStatus("Ativo");
             pedido.setCliente(cliente);
+            clienteService.atualizar(cliente, cliente.getId());
         }
 
         Servico servico = pedido.getServico();
