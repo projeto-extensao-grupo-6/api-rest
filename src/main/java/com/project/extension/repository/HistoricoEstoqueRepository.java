@@ -8,4 +8,6 @@ import java.util.List;
 public interface HistoricoEstoqueRepository extends JpaRepository<HistoricoEstoque, Integer> {
 
     List<HistoricoEstoque> findByEstoqueId(Integer estoqueId);
+
+    void deleteByPedidoId(Integer id);
 }

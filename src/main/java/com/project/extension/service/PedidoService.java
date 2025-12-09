@@ -3,6 +3,7 @@ package com.project.extension.service;
 import com.project.extension.entity.Etapa;
 import com.project.extension.entity.Pedido;
 import com.project.extension.exception.naoencontrado.PedidoNaoEncontradoException;
+import com.project.extension.repository.HistoricoEstoqueRepository;
 import com.project.extension.repository.PedidoRepository;
 import com.project.extension.strategy.pedido.PedidoContext;
 import jakarta.transaction.Transactional;
@@ -20,6 +21,7 @@ public class PedidoService {
     private final PedidoRepository repository;
     private final EtapaService etapaService;
     private final PedidoContext pedidoContext;
+    private final HistoricoEstoqueRepository historicoEstoqueRepository;
     private final LogService logService;
 
     @Transactional
@@ -82,6 +84,7 @@ public class PedidoService {
 
         Pedido pedido = buscarPorId(id);
         pedidoContext.deletar(pedido);
+        historicoEstoqueRepository.deleteByPedidoId(pedido.getId());
         repository.delete(pedido);
 
         logService.info(String.format(

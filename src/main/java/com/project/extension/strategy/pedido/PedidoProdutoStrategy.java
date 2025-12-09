@@ -105,6 +105,9 @@ public class PedidoProdutoStrategy implements PedidoStrategy {
             estoqueService.entrada(movimento);
         }
 
+        pedido.setCliente(null);
+        pedido.setStatus(null);
+
         return pedido;
     }
 }
